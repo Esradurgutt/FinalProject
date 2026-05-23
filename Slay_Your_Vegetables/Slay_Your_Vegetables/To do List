@@ -1,0 +1,47 @@
+Foods
+- Salad= Tomato(K), Lettuce(K), Lemon(K), Tuna(T)   300-400-300-150
+- Hamburger= Ground beef(T), Bread(K), Lettuce(K), Tomato(K) 150-350-400-300
+- Ali Nazik= Eggplant(T), Yogurt(B), Ground beef(T), Tomato(K) 250-300-150-300
+- Soup= Cream(B), Butter(T), Chicken(T), Mushroom(K) 300-200-250-350
+- Dessert= Cream(B), Chocolate(T), Banana(K), Biscuit(K) 300-a-350-400
+
+
+
+
+
+
+
+Enemies
+
+(Knife)
+Tomato, Lettuce, Lemon, Bread, Mushroom, Banana, Biscuit
+
+N.A: Bıçak sıradaki ilk düşmana saldırır
+Ult: Bıçak tüm sıranın sonuna kadar ilerleyerek isabet eden tüm düşmanlara saldırır
+
+(Torch)
+Tuna, Ground beef, Eggplant, Butter, Chicken, Chocolate
+
+N.A:Sıranın yarısına kadar bir hasar verir
+Ult: Ortada bir alev oluşur ve ekrandaki tüm düşmanlara hasar verir
+
+(Blender)
+Yogurt, Cream
+
+N.A:Sırada ilerleyip geri dönecek
+Ult: tüm sıradaki düşmanlara hasar verip geriye gitmelerini sağlayacak
+
+UI           |
+silah        |
+silah anim   |-> Esra
+giriş bg     |
+weapons class|
+player class |
+
+oyun içi bg  |
+düşman       |
+düşman anim  |-> Sude
+enemies class|
+how to play  |
+
+can/stamina(spamlamamak için)/mana(ulti için)

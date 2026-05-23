@@ -1,0 +1,41 @@
+If you want to add texture
+- Go to Game1.cs
+- Write ->  Texture2D texture; // texture is a variable name
+- Write in LoadContent() -> texture= Content.Load<Texture2D>("name"); // name is the name of your png file 
+- Write in Draw() -> _spriteBatch.Begin() // If the texture was blurry, write this in parantheses (for pixel art) -> samplerState: samplerState.PointClamp
+                     _spriteBatch.Draw(texture, new Vector2(100,100), Color.White)  //Vector2(x,y)
+                                             or
+                     _spriteBatch.Draw(texture, new Rectangle (100,100,100,100), Color.White)  //Rectangle(x,y,width,height)
+                     _spriteBatch.End()
+
+
+
+If you want to add sprites 
+- Write ->  Sprite sprite; // sprite is a variable name
+- Write in LoadContent() -> texture= Content.Load<Texture2D>("name");
+                            sprite = new Sprite(texture, Vector2.Zero); // if you add another sprite change the Sprite to Player or another class
+- Write in Draw() -> _sp.Begin()
+                     _sp.Draw(sprite.texture,sprite.position, Color.White) //texture and position is in sprite class
+                     _sp.End()
+
+- Add new class -> public Player : Sprite  
+//look at the player class the rest of them writing in there.
+
+
+
+
+
+Input
+ add boolean variable (bool a=false)
+ -Write in update -> if(!a && Keyboard.GetState().IsKeyDown(Keys.BLABLA))
+                    a=true;
+                    debug.wr "pressed"
+                    if(Keyboard.GetState().IsKeyUp(Keys.BLABLA))
+                    a = false;
+
+                    mouse version:
+                    Mouse.GetState().LeftButton == ButtonState.Pressed
+
+
+add texts
+-Draw() -> _spriteBatch.DrawString(variable," ", new Vector2(x,y), Color.blabla)
