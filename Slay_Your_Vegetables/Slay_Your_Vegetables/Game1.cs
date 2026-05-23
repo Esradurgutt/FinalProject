@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media; 
 using System.Collections.Generic;
 
 namespace Slay_Your_Vegetables
@@ -12,6 +13,7 @@ namespace Slay_Your_Vegetables
         private GraphicsDeviceManager _graphics;
         public static Microsoft.Xna.Framework.Content.ContentManager ContentManager;
         private SpriteBatch _spriteBatch;
+        private Song _backgroundMusic;//song
         
         private LevelManage _levelManage;
         private SpawnManage _spawnManage;
@@ -56,6 +58,13 @@ namespace Slay_Your_Vegetables
             ContentManager = this.Content;
 
             AssetManager.LoadAllContent(ContentManager, GraphicsDevice);
+            
+            // Müzik yükleme ve başlatma
+            _backgroundMusic = Content.Load<Song>("Music"); 
+            MediaPlayer.Play(_backgroundMusic);
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.5f;
+
             _uiManager = new UIManager(_spriteBatch, this);
             _spawnManage = new SpawnManage(_levelManage, Enemy.textures);
 
@@ -95,7 +104,6 @@ namespace Slay_Your_Vegetables
 
             base.Update(gameTime);
         }
-
         private void HandleMenuLogic()
         {
             if (InputManager.IsLeftMouseClicked())
@@ -153,7 +161,6 @@ namespace Slay_Your_Vegetables
 
             int currentLine = GetPlayerLine();
 
-            // SİLAH ATEŞLEME
             if (InputManager.IsKeyPressed(Keys.Space) && _player.CurrentMana >= 15)
             {
                 Texture2D currentTex = _player.CurrentWeaponIndex switch
@@ -172,7 +179,6 @@ namespace Slay_Your_Vegetables
                 else _player.AddWhiskAttack();
             }
 
-            // SİLİNEN ULTI KODLARI 
             if (InputManager.IsKeyPressed(Keys.X))
             {
                 if (_player.CurrentWeaponIndex == 0 && _player.KnifeCount >= 10) 
@@ -258,10 +264,8 @@ namespace Slay_Your_Vegetables
                 foreach (var enemy in _spawnManage.GetActiveEnemies()) enemy.Draw(_spriteBatch);
                 foreach (var bullet in activeBullets) bullet.Draw(_spriteBatch);
                 
-                // ATEŞ EFEKTİ
                 foreach (var particle in fireParticles) particle.Draw(_spriteBatch, AssetManager.FireTex);
 
-                // HUD ÇİZİMİ  
                 _uiManager.DrawGameHUD(_player, _levelManage, currentLevelIndex);
             }
 

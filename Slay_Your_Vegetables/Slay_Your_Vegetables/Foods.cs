@@ -8,8 +8,8 @@ namespace Slay_Your_Vegetables
     
     public class Tomato : SharpResponsiveEnemy { public Tomato(Texture2D t, Vector2 p) : base(t, p, "Tomato", 300f, 2f) { } }
     public class Lettuce : SharpResponsiveEnemy { public Lettuce(Texture2D t, Vector2 p) : base(t, p, "Lettuce", 400f, 2f) { } }
-    public class Lemon : SharpResponsiveEnemy { public Lemon(Texture2D t, Vector2 p) : base(t, p, "Lemon", 300f, 1.5f) { } }
-    public class Bread : SharpResponsiveEnemy { public Bread(Texture2D t, Vector2 p) : base(t, p, "Bread", 350f, 1.5f) { } }
+    public class Lemon : SharpResponsiveEnemy { public Lemon(Texture2D t, Vector2 p) : base(t, p, "Lemon", 300f, 2.5f) { } }
+    public class Bread : SharpResponsiveEnemy { public Bread(Texture2D t, Vector2 p) : base(t, p, "Bread", 350f, 2f) { } }
     public class Mushroom : SharpResponsiveEnemy { public Mushroom(Texture2D t, Vector2 p) : base(t, p, "Mushroom", 350f, 1.5f) { } }
     public class Banana : SharpResponsiveEnemy { public Banana(Texture2D t, Vector2 p) : base(t, p, "Banana", 350f, 1.5f) { } }
     public class Biscuit : SharpResponsiveEnemy { public Biscuit(Texture2D t, Vector2 p) : base(t, p, "Biscuit", 350f, 2.0f) { } }
