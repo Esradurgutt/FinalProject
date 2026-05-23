@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Slay_Your_Vegetables
 {
-    public class Axe : Weapons //Bıçağın ultisi
+    public class Axe : Weapons //The knife’s ultimate
     {
         public Axe()
         {

@@ -6,7 +6,7 @@ namespace Slay_Your_Vegetables
 {
     public abstract class Enemy : ScaledSprite
     {
-        public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();
+        public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();// texture ile ID leri bağladık
     
         public int ID { get; set; } 
         
@@ -55,7 +55,7 @@ namespace Slay_Your_Vegetables
             }
         }
 
-        public static Enemy CreateEnemy(int id, Vector2 position, int line)
+        public static Enemy CreateEnemy(int id, Vector2 position, int line)// It is for create enemy in levels with Enemy ID's
         {
             if (textures == null || !textures.ContainsKey(id)) return null;
             Texture2D tex = textures[id];

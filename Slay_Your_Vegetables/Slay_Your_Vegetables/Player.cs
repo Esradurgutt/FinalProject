@@ -12,7 +12,7 @@ namespace Slay_Your_Vegetables
         public int Width = 200; 
         public int Height = 200;
 
-        // Şefin değerleri
+        // Chef's values
         public int MaxHP = 100;
         public int CurrentHP;
         public int MaxMana = 100;
@@ -20,17 +20,17 @@ namespace Slay_Your_Vegetables
         public int MaxStamina = 100;
         public float CurrentStamina;
 
-        // Silah ve Sayaç Kontrolü
+        // Weapon and Meter Control
         public List<Weapons> WeaponInventory;
         public int CurrentWeaponIndex = 0;
         public Weapons ActiveWeapon => WeaponInventory[CurrentWeaponIndex];
         
-        // Ulti Sayaçları
+        // Ultimate Counters
         public int KnifeCount = 0;
         public int BlowtorchCount = 0;
         public int WhiskCount = 0;
 
-        // yürüme animasyonu
+        // walking animation
         private List<Texture2D> animationFrames;
         private int currentFrame = 0;
         private float frameTimer = 0f;
@@ -45,7 +45,7 @@ namespace Slay_Your_Vegetables
             WeaponInventory = new List<Weapons> { new Knife(), new Blowtorch(), new Whisk() };
             animationFrames = new List<Texture2D>();
             
-            // Animasyon için
+            // For animation
             for (int i = 0; i < 5; i++)
             {
                 Texture2D loadedTex = null;
@@ -73,7 +73,7 @@ namespace Slay_Your_Vegetables
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            // Mana yenilenmesi
+            // Mana renewal
             if (CurrentMana < MaxMana) CurrentMana += dt * 20f;
 
             KeyboardState state = Keyboard.GetState();
@@ -84,7 +84,7 @@ namespace Slay_Your_Vegetables
 
             if (animationFrames == null || animationFrames.Count == 0) return;
 
-            // Hareket ve Stamina
+            // Movement and Stamina
             if (movement != Vector2.Zero)
             {
                 if (CurrentStamina > 0) CurrentStamina -= dt * 60f;

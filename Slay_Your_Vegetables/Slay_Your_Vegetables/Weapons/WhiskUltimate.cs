@@ -20,10 +20,11 @@ namespace Slay_Your_Vegetables
             Position = new Vector2(startPos.X, startPos.Y + 55f); 
             Line = line;
             
-            if (texs != null && texs.Count > 0)//5 görselden random Whirlpoollar gelicek
+            if (texs != null && texs.Count > 0)//Random whirlpools will appear from 5 visuals.
             {
                 texture = texs[rnd.Next(texs.Count)];
-                // Kendi etrafında dönmesi için ağırlık merkezini tam ortası yaptık
+                //We set the pivot point to the exact center so it rotates around itself.
+
                 origin = new Vector2(texture.Width / 2f, texture.Height / 2f); 
             }
         }
@@ -34,11 +35,12 @@ namespace Slay_Your_Vegetables
 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            rotation += 10f * dt; //bumerang etkisi için
+            rotation += 10f * dt; //For a boomerang effect.
 
             Position.X += Speed * dt;
             
-            // Ekranın sağından çıkınca kaybolsun
+            //To make it disappear when it exits the right side of the screen.
+
             if (Position.X > 2200) 
             {
                 IsActive = false;
@@ -56,9 +58,9 @@ namespace Slay_Your_Vegetables
                 // Girdap merkezli olduğu için mesafeyi (70f) ona göre kontrol ediyoruz
                 if (enemyLine == Line && Math.Abs(enemy.Position.X - Position.X) < 70f)
                 {
-                    enemy.Position = new Vector2(enemy.Position.X + 200f, enemy.Position.Y);//Düşmanı geriye itme
-                    enemy.CurrentHP -= 20f; // Az Hasar Verme
-                    IsActive = false; // 3. İlk düşmana değince kaybolur??
+                    enemy.Position = new Vector2(enemy.Position.X + 200f, enemy.Position.Y);//Knock the enemy back
+                    enemy.CurrentHP -= 20f; // Deal low damage.
+                    IsActive = false; 
                     break;
                 }
             }

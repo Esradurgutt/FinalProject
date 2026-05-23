@@ -19,7 +19,8 @@ namespace Slay_Your_Vegetables
         public float currentDamage; 
         private List<Enemy> hitEnemies = new List<Enemy>();
 
-        // Bumerang ve Dönme efekti için 
+        // For a boomerang and spinning effect
+
         public float Rotation = 0f;
         public bool IsReturning = false;
 
@@ -34,27 +35,28 @@ namespace Slay_Your_Vegetables
 
         public void Update(GameTime gameTime, List<Enemy> enemies)
         {
-            // HAREKET VE BUMERANG MANTIĞI 
+            //MOVEMENT AND BOOMERANG LOGIC 
             if (weapon.Name == "Whisk")
             {
                 Rotation += 0.2f; 
 
                 if (!IsReturning)
                 {
-                    Position.X += Speed; // İleri git
+                    Position.X += Speed; // While moving forward
                     if (Position.X > 1900) 
-                        IsReturning = true; // Ekranın sonuna gelince geri dönmeye başla
+                        IsReturning = true; //When it reaches the end of the line, start returning
+
                 }
                 else
                 {
-                    Position.X -= Speed; // Geri dön
+                    Position.X -= Speed; // While returning
                     if (Position.X < 300) 
-                        IsActive = false; // Şefe ulaştığında yok ol
+                        IsActive = false; //To make it disappear when it reaches the boss
                 }
             }
             else
             {
-                // Knife,Axe,Whisk,Blowtorch normal düz gider
+                // Knife, Axe, Whisk, Blowtorch move straight normally.
                 Position.X += Speed;
                 if (Position.X > 2000) 
                 { 
@@ -63,7 +65,7 @@ namespace Slay_Your_Vegetables
                 }
             }
 
-            // ÇARPIŞMA KONTROLÜ
+            // COLLISION CHECK
             foreach (var e in enemies)
             {
                 bool sameLine = (e.Line == this.BulletLine) || (Math.Abs(e.Position.Y - this.Position.Y) < 80);
@@ -73,25 +75,25 @@ namespace Slay_Your_Vegetables
                 {
                     if (!hitEnemies.Contains(e))
                     {
-                        // 1. Hasar hesapla
+                        // 1. Calculate the damage.
                         float finalDamage = weapon.EffectiveFoods.Contains(e.Name) ? currentDamage : currentDamage * 0.1f;
 
-                        // 2. Hasarı uygula
+                        // 2. Apply the damage
                         e.TakeDamage(finalDamage, weapon.Name);
                         hitEnemies.Add(e);
 
-                        // 3. SİLAHA GÖRE TEPKİ:
+                        // 3.REACTION DEPENDING ON THE WEAPON:
                         if (weapon.Name == "Axe") 
                         {
-                            currentDamage *= 0.5f; // Baltanın hasarı belli yüzdelikte düşer ve delip geçer
+                            currentDamage *= 0.5f; // The axe’s damage decreases by a certain percentage and it pierces through.
                         }
                         else if (weapon.Name == "Whisk")
                         {
-                            IsReturning = true; // Çırpıcı ilk çarptığı düşmandan itibaren geri dönmeye başlar
+                            IsReturning = true; // The whisk starts returning after hitting the first enemy it hits.
                         }
                         else 
                         { 
-                            IsActive = false; // Bıçak veya Ateş: Çarptığı an yok olur
+                            IsActive = false; // Knife or Fire: Disappears on impact
                             break; 
                         }
                     }
@@ -105,7 +107,7 @@ namespace Slay_Your_Vegetables
             {
                 if (weapon.Name == "Whisk")
                 {
-                    // Çırpıcının bumerang etkisi için 
+                    //For the whisk’s boomerang effect
                     Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);
                     Rectangle destRect = new Rectangle((int)Position.X + Width / 2, (int)Position.Y + Height / 2, Width, Height);
                     

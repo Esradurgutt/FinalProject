@@ -138,7 +138,6 @@ namespace Slay_Your_Vegetables
                 if (!activeWhiskUltimates[i].IsActive) activeWhiskUltimates.RemoveAt(i);
             }
 
-            // SİLİNEN ATEŞ PARTİKÜLLERİNİN GÜNCELLENMESİ EKLENDİ
             for (int i = fireParticles.Count - 1; i >= 0; i--)
             {
                 fireParticles[i].Update();
@@ -173,7 +172,7 @@ namespace Slay_Your_Vegetables
                 else _player.AddWhiskAttack();
             }
 
-            // SİLİNEN ULTI KODLARI EKLENDİ
+            // SİLİNEN ULTI KODLARI 
             if (InputManager.IsKeyPressed(Keys.X))
             {
                 if (_player.CurrentWeaponIndex == 0 && _player.KnifeCount >= 10) 
@@ -259,10 +258,10 @@ namespace Slay_Your_Vegetables
                 foreach (var enemy in _spawnManage.GetActiveEnemies()) enemy.Draw(_spriteBatch);
                 foreach (var bullet in activeBullets) bullet.Draw(_spriteBatch);
                 
-                // ATEŞ EFEKTİ ÇİZİMİ EKLENDİ
+                // ATEŞ EFEKTİ
                 foreach (var particle in fireParticles) particle.Draw(_spriteBatch, AssetManager.FireTex);
 
-                // HUD ÇİZİMİ EKLENDİ! 
+                // HUD ÇİZİMİ  
                 _uiManager.DrawGameHUD(_player, _levelManage, currentLevelIndex);
             }
 

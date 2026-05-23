@@ -24,7 +24,8 @@ namespace Slay_Your_Vegetables
             if (Life > 0)
             {
               
-                int yPos = 120 + (TargetLine * 185) + 10; // Bu sayede ateş düşmanla aynı yerde
+                int yPos = 120 + (TargetLine * 185) + 10; // This way, the fire lands in the same spot as the enemy.
+
                 
                 Rectangle destRect = new Rectangle((int)Position.X, yPos, 80, 80);
                 
