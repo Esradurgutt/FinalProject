@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media; 
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 
 namespace Slay_Your_Vegetables
@@ -14,7 +14,7 @@ namespace Slay_Your_Vegetables
         public static Microsoft.Xna.Framework.Content.ContentManager ContentManager;
         private SpriteBatch _spriteBatch;
         private Song _backgroundMusic;//song
-        
+        Texture2D kitchenT, recipeT;
         private LevelManage _levelManage;
         private SpawnManage _spawnManage;
         private UIManager _uiManager;
@@ -23,10 +23,13 @@ namespace Slay_Your_Vegetables
         public List<Bullet> activeBullets = new List<Bullet>();
         private List<FireParticle> fireParticles = new List<FireParticle>();
         private List<WhiskUltimate> activeWhiskUltimates = new List<WhiskUltimate>();
-
+        private enum GameState { HowToPlay, Playing }
         private LocalGameState _currentState = LocalGameState.MainMenu;
         private Rectangle playButton, optionsButton, exitButton;
-        private int currentLevelIndex = 1;
+        private int CurrentLevel = 1;
+        private SpriteFont font, titleF;
+        private Recipe recipe;
+
 
         public Game1()
         {
@@ -41,8 +44,7 @@ namespace Slay_Your_Vegetables
 
         protected override void Initialize()
         {
-            _levelManage = new LevelManage();
-            _levelManage.LoadLevel(currentLevelIndex);
+
 
             int centerX = (1920 / 2) - 200;
             playButton = new Rectangle(centerX, 300, 400, 90);
@@ -56,17 +58,23 @@ namespace Slay_Your_Vegetables
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentManager = this.Content;
+            font = Content.Load<SpriteFont>("Fonts/font1");//YENİ EKLENENLER YÜKLENDİ
+            titleF = Content.Load<SpriteFont>("Fonts/titleF");//YENİ EKLENENLER YÜKLENDİ
+            recipeT = Content.Load<Texture2D>("recipeP");//YENİ EKLENENLER YÜKLENDİ
+            kitchenT = Content.Load<Texture2D>("kitchenT");//YENİ EKLENENLER YÜKLENDİ
 
             AssetManager.LoadAllContent(ContentManager, GraphicsDevice);
-            
+
             // Müzik yükleme ve başlatma
-            _backgroundMusic = Content.Load<Song>("Music"); 
+            _backgroundMusic = Content.Load<Song>("Music");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Volume = 0.5f;
 
             _uiManager = new UIManager(_spriteBatch, this);
             _spawnManage = new SpawnManage(_levelManage, Enemy.textures);
+            _levelManage = new LevelManage(GraphicsDevice, font, titleF, recipeT);// PARANTEZ DOLDU
+            _levelManage.LoadLevel(CurrentLevel);
 
             Texture2D chefTex = null;
             try { chefTex = Content.Load<Texture2D>("chefWalk_00000"); } catch { }
@@ -98,12 +106,27 @@ namespace Slay_Your_Vegetables
 
                 case LocalGameState.GameOver:
                     if (InputManager.IsKeyPressed(Keys.R)) RestartLevel();
-                    if (InputManager.IsKeyPressed(Keys.Back)) { currentLevelIndex = 1; _currentState = LocalGameState.MainMenu; }
+                    if (InputManager.IsKeyPressed(Keys.Back)) { CurrentLevel = 1; _currentState = LocalGameState.MainMenu; }
                     break;
+            }
+            if (_levelManage.CurrentLevel != null) // SEVİYE AYARI
+            {
+                _levelManage.CurrentLevel.Update(gameTime);
+            }
+
+            if (_levelManage.CurrentLevel != null && _levelManage.CurrentLevel.IsTutorialActive)//TUTORIAL ÇALIŞMASI İÇİN
+            {
+                base.Update(gameTime);
+                return;
+            }
+            if (_spawnManage != null)
+            {
+                _spawnManage.Update(gameTime);
             }
 
             base.Update(gameTime);
         }
+
         private void HandleMenuLogic()
         {
             if (InputManager.IsLeftMouseClicked())
@@ -124,9 +147,9 @@ namespace Slay_Your_Vegetables
 
             if (CheckLevelComplete())
             {
-                currentLevelIndex = currentLevelIndex > 4 ? 1 : currentLevelIndex + 1;
-                LoadNewLevel(currentLevelIndex);
-                if (currentLevelIndex == 1) _currentState = LocalGameState.MainMenu;
+                CurrentLevel = CurrentLevel > 4 ? 1 : CurrentLevel + 1;
+                LoadNewLevel(CurrentLevel);
+                if (CurrentLevel == 1) _currentState = LocalGameState.MainMenu;
                 return;
             }
 
@@ -169,11 +192,11 @@ namespace Slay_Your_Vegetables
                     2 => AssetManager.WhiskTex,
                     _ => AssetManager.KnifeTex
                 };
-                
+
                 _player.CurrentMana -= 15f;
                 Vector2 spawnPos = new Vector2(_player.Position.X + _player.Width, _player.Position.Y + (_player.Height / 3));
                 activeBullets.Add(new Bullet(currentTex, spawnPos, _player.ActiveWeapon, currentLine));
-                
+
                 if (_player.CurrentWeaponIndex == 0) _player.AddKnifeAttack();
                 else if (_player.CurrentWeaponIndex == 1) _player.AddBlowtorchAttack();
                 else _player.AddWhiskAttack();
@@ -181,26 +204,26 @@ namespace Slay_Your_Vegetables
 
             if (InputManager.IsKeyPressed(Keys.X))
             {
-                if (_player.CurrentWeaponIndex == 0 && _player.KnifeCount >= 10) 
-                { 
-                    activeBullets.Add(new Bullet(AssetManager.AxTex, new Vector2(_player.Position.X, _player.Position.Y), new Axe(), currentLine)); 
-                    _player.ResetKnifeCount(); 
+                if (_player.CurrentWeaponIndex == 0 && _player.KnifeCount >= 10)
+                {
+                    activeBullets.Add(new Bullet(AssetManager.AxTex, new Vector2(_player.Position.X, _player.Position.Y), new Axe(), currentLine));
+                    _player.ResetKnifeCount();
                 }
-                else if (_player.CurrentWeaponIndex == 1 && _player.BlowtorchCount >= 10) 
-                { 
+                else if (_player.CurrentWeaponIndex == 1 && _player.BlowtorchCount >= 10)
+                {
                     System.Random rnd = new System.Random();
-                    for(int i = 0; i < 40; i++) 
+                    for (int i = 0; i < 40; i++)
                     {
-                        int randomLine = rnd.Next(0, 4); 
+                        int randomLine = rnd.Next(0, 4);
                         fireParticles.Add(new FireParticle(new Vector2(rnd.Next(500, 1900), 0), randomLine));
                     }
                     _player.ActiveWeapon.Ultimate(_spawnManage.GetActiveEnemies());
-                    _player.ResetBlowtorchCount(); 
+                    _player.ResetBlowtorchCount();
                 }
                 else if (_player.CurrentWeaponIndex == 2 && _player.WhiskCount >= 10)
                 {
                     System.Random rnd = new System.Random();
-                    float pX = _player.Position.X; 
+                    float pX = _player.Position.X;
                     activeWhiskUltimates.Add(new WhiskUltimate(new Vector2(pX, 160f), 0, AssetManager.GirdapTexs, rnd));
                     activeWhiskUltimates.Add(new WhiskUltimate(new Vector2(pX, 345f), 1, AssetManager.GirdapTexs, rnd));
                     activeWhiskUltimates.Add(new WhiskUltimate(new Vector2(pX, 530f), 2, AssetManager.GirdapTexs, rnd));
@@ -239,7 +262,7 @@ namespace Slay_Your_Vegetables
 
         private void RestartLevel()
         {
-            LoadNewLevel(currentLevelIndex);
+            LoadNewLevel(CurrentLevel);
             _currentState = LocalGameState.Playing;
         }
 
@@ -249,12 +272,12 @@ namespace Slay_Your_Vegetables
             Matrix scale = Matrix.CreateScale((float)GraphicsDevice.Viewport.Width / 1920f, (float)GraphicsDevice.Viewport.Height / 1080f, 1.0f);
 
             _spriteBatch.Begin(transformMatrix: scale);
-
+            _spriteBatch.Draw(kitchenT, new Rectangle(0, 0, 2448, 2448), Color.White); //MUTFAK TEXTUREI
             if (_currentState == LocalGameState.MainMenu) _uiManager.DrawMainMenu(playButton, optionsButton, exitButton);
             else if (_currentState == LocalGameState.GameOver) _uiManager.DrawGameOver();
             else if (_currentState == LocalGameState.Playing)
             {
-                _spriteBatch.Draw(AssetManager.Line1, new Rectangle(500, 120, 1450, 170), Color.Beige);
+                _spriteBatch.Draw(AssetManager.Line1, new Rectangle(500, 120, 1450, 170), Color.Beige); //Renklerini koyulaştır kahverengi fln olsun (çikolatadan açık renk olsun)
                 _spriteBatch.Draw(AssetManager.Line2, new Rectangle(500, 305, 1450, 170), Color.Beige);
                 _spriteBatch.Draw(AssetManager.Line3, new Rectangle(500, 490, 1450, 170), Color.Beige);
                 _spriteBatch.Draw(AssetManager.Line4, new Rectangle(500, 675, 1450, 170), Color.Beige);
@@ -263,12 +286,19 @@ namespace Slay_Your_Vegetables
                 _player.Draw(_spriteBatch);
                 foreach (var enemy in _spawnManage.GetActiveEnemies()) enemy.Draw(_spriteBatch);
                 foreach (var bullet in activeBullets) bullet.Draw(_spriteBatch);
-                
+
                 foreach (var particle in fireParticles) particle.Draw(_spriteBatch, AssetManager.FireTex);
 
-                _uiManager.DrawGameHUD(_player, _levelManage, currentLevelIndex);
+                _uiManager.DrawGameHUD(_player, _levelManage, CurrentLevel);
             }
-
+            if (_levelManage.CurrentLevel != null)
+            {
+                _levelManage.CurrentLevel.Draw(_spriteBatch);
+            }
+            if (_spawnManage != null && _levelManage.CurrentLevel != null && !_levelManage.CurrentLevel.IsTutorialActive)//BURASI DÜZENLENDİ TUTORIAL İÇİN
+            {
+                _spawnManage.Draw(_spriteBatch);
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
         }

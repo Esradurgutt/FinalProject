@@ -67,18 +67,18 @@ namespace Slay_Your_Vegetables
                 case 0: createdEnemy = new Tomato(tex, position); break;
                 case 1: createdEnemy = new Lettuce(tex, position); break;
                 case 2: createdEnemy = new Lemon(tex, position); break;
-                case 4: createdEnemy = new Bread(tex, position); break;
-                case 11: createdEnemy = new Mushroom(tex, position); break;
-                case 13: createdEnemy = new Banana(tex, position); break;
-                case 14: createdEnemy = new Biscuit(tex, position); break;
                 case 3: createdEnemy = new Tuna(tex, position); break;
+                case 4: createdEnemy = new Bread(tex, position); break;
                 case 5: createdEnemy = new GBeef(tex, position); break;
                 case 6: createdEnemy = new Eggplant(tex, position); break;
-                case 9: createdEnemy = new Butter(tex, position); break;
-                case 10: createdEnemy = new Chicken(tex, position); break;
-                case 12: createdEnemy = new Chocolate(tex, position); break;
                 case 7: createdEnemy = new Yogurt(tex, position); break;
                 case 8: createdEnemy = new Cream(tex, position); break;
+                case 9: createdEnemy = new Butter(tex, position); break;
+                case 10: createdEnemy = new Chicken(tex, position); break;
+                case 11: createdEnemy = new Mushroom(tex, position); break;
+                case 12: createdEnemy = new Chocolate(tex, position); break;
+                case 13: createdEnemy = new Banana(tex, position); break;
+                case 14: createdEnemy = new Biscuit(tex, position); break;
             }
             
             if (createdEnemy != null)
