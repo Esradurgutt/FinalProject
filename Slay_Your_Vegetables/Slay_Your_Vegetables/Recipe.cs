@@ -5,89 +5,90 @@ using System;
 
 public class Recipe  //How to play 
 {
-   public Texture2D recipe, button;
-   public SpriteFont font, titleF;
-   public Rectangle recipeRec, buttonRec;
-   public Vector2 titlePos, textPos;
+    public Texture2D recipe, button;
+    public SpriteFont font, titleF;
+    public Rectangle recipeRec, buttonRec;
+    public Vector2 titlePos, textPos;
 
-   protected string Title = "Title here", Content = "Content here", ButtonText = "Start";
-   protected Color
-   NormalButtonC = Color.Red,
-   PressedButtonC = Color.DarkRed;
-
-
-   public event Action Pressed;
-   private bool isPressed = false;
-   private MouseState mouseState;
-
-   public Recipe(GraphicsDevice graphicsDevice, SpriteFont font, SpriteFont title, Texture2D recipeTexture)
-   {
-      this.font = font;
-      titleF = title;
-      recipe = recipeTexture;
-
-      button = new Texture2D(graphicsDevice, 1, 1); // it is for creating a texture (we don't have a texture for buttons,just using rec)
-      button.SetData(new[] { Color.White });
+    protected string Title = "Title here", Content = "Content here", ButtonText = "Start";
+    protected Color
+    NormalButtonC = Color.Red,
+    PressedButtonC = Color.DarkRed;
 
 
-      int screenWidth = graphicsDevice.Viewport.Width;  // screen size
-      int screenHeight = graphicsDevice.Viewport.Height;
-      int panelWidth = 700, panelHeight = 900; // recipe panel size
-      recipeRec = new Rectangle((screenWidth / 2) - 400, (screenHeight / 2) - 475, panelWidth, panelHeight);
+    public event Action Pressed;
+    private bool isPressed = false;
+    private MouseState mouseState;
 
-      textPos = new Vector2(recipeRec.X + 85, recipeRec.Y + 230);
+    public Recipe(GraphicsDevice graphicsDevice, SpriteFont font, SpriteFont title, Texture2D recipeTexture)
+    {
+        this.font = font;
+        titleF = title;
+        recipe = recipeTexture;
 
-      int buttonWidth = 160, buttonHeight = 50; //start button size 
-      buttonRec = new Rectangle(
-            recipeRec.Right - buttonWidth - 50,
-            recipeRec.Bottom - buttonHeight - 50,
-            buttonWidth, buttonHeight);
-   }
-   public void Update(GameTime gameTime)
-   {
-      MouseState currentmouseState = Mouse.GetState();
-      float scaleX = (float)button.GraphicsDevice.Viewport.Width / 1920f;
-      float scaleY = (float)button.GraphicsDevice.Viewport.Height / 1080f;
-      Point virtualMousePos = new Point(
-          (int)(currentmouseState.X / scaleX),
-          (int)(currentmouseState.Y / scaleY)
-      );
-      isPressed = buttonRec.Contains(virtualMousePos);
-      if (isPressed && currentmouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
-      {
-         Pressed?.Invoke();
-      }
+        button = new Texture2D(graphicsDevice, 1, 1); // it is for creating a texture (we don't have a texture for buttons,just using rec)
+        button.SetData(new[] { Color.White });
 
-      mouseState = currentmouseState;
-   }
-   public void Draw(SpriteBatch spriteBatch)
-   {
-      spriteBatch.Draw(recipe, recipeRec, Color.White); //background
-      
 
-      Vector2 rawTitleSize = titleF.MeasureString(Title);//to center the title
-      Vector2 originTitle = new Vector2(rawTitleSize.X / 2f, rawTitleSize.Y / 2f);
-      float panelCenterX = recipeRec.X + (recipeRec.Width / 2f);
-      Vector2 newTitlepos = new Vector2(panelCenterX, recipeRec.Y + 100f);
-      spriteBatch.DrawString(titleF, Title, newTitlepos, Color.DarkSlateGray, 0f, originTitle, 1.0f, SpriteEffects.None, 0f);
-      
-      spriteBatch.DrawString(font, Content, textPos, Color.SlateGray);  //for text (how to play)
-      
-      
-      Color currentButtonColor = isPressed ? PressedButtonC : NormalButtonC; // for change the color of mousestate
-      spriteBatch.Draw(button, buttonRec, currentButtonColor); //button
-      Vector2 textSize = font.MeasureString(ButtonText);
-      Vector2 buttonTextPos = new Vector2(
-      buttonRec.X + (buttonRec.Width - textSize.X) / 2,
-      buttonRec.Y + (buttonRec.Height - textSize.Y) / 2);
+        int screenWidth = graphicsDevice.Viewport.Width;  // screen size
+        int screenHeight = graphicsDevice.Viewport.Height;
+        int panelWidth = 700, panelHeight = 900; // recipe panel size
+        recipeRec = new Rectangle((screenWidth / 2) - 400, (screenHeight / 2) - 475, panelWidth, panelHeight);
 
-      spriteBatch.DrawString(font, ButtonText, buttonTextPos, Color.White); //button font
-   }
+        // Constructor (Yapıcı metot) içinde textPos'u daha yukarıya (başlığa yakın) çekiyoruz
+        // 230 değerini 160 civarına düşürmek başlığa yaklaştıracaktır.
+        textPos = new Vector2(recipeRec.X + 85, recipeRec.Y + 160);
+
+        int buttonWidth = 160, buttonHeight = 50; //start button size 
+        buttonRec = new Rectangle(
+              recipeRec.Right - buttonWidth - 50,
+              recipeRec.Bottom - buttonHeight - 50,
+              buttonWidth, buttonHeight);
+    }
+    public void Update(GameTime gameTime)
+    {
+        MouseState currentmouseState = Mouse.GetState();
+        float scaleX = (float)button.GraphicsDevice.Viewport.Width / 1920f;
+        float scaleY = (float)button.GraphicsDevice.Viewport.Height / 1080f;
+        Point virtualMousePos = new Point(
+            (int)(currentmouseState.X / scaleX),
+            (int)(currentmouseState.Y / scaleY)
+        );
+        isPressed = buttonRec.Contains(virtualMousePos);
+        if (isPressed && currentmouseState.LeftButton == ButtonState.Pressed && mouseState.LeftButton == ButtonState.Released)
+        {
+            Pressed?.Invoke();
+        }
+
+        mouseState = currentmouseState;
+    }
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(recipe, recipeRec, Color.White); //background
+        
+
+        Vector2 rawTitleSize = titleF.MeasureString(Title);//to center the title
+        Vector2 originTitle = new Vector2(rawTitleSize.X / 2f, rawTitleSize.Y / 2f);
+        float panelCenterX = recipeRec.X + (recipeRec.Width / 2f);
+        Vector2 newTitlepos = new Vector2(panelCenterX, recipeRec.Y + 170f);
+        spriteBatch.DrawString(titleF, Title, newTitlepos, Color.DarkSlateGray, 0f, originTitle, 1.0f, SpriteEffects.None, 0f);
+        
+        // Başlığın bittiği yerin biraz altına (örneğin 50 piksel altına) metni çizdir
+        Vector2 contentPos = new Vector2(recipeRec.X + 85, newTitlepos.Y + 50f);
+        spriteBatch.DrawString(font, Content, contentPos, Color.SlateGray);  //for text (how to play)
+        
+        
+        Color currentButtonColor = isPressed ? PressedButtonC : NormalButtonC; // for change the color of mousestate
+        spriteBatch.Draw(button, buttonRec, currentButtonColor); //button
+        Vector2 textSize = font.MeasureString(ButtonText);
+        Vector2 buttonTextPos = new Vector2(
+        buttonRec.X + (buttonRec.Width - textSize.X) / 2,
+        buttonRec.Y + (buttonRec.Height - textSize.Y) / 2);
+
+        spriteBatch.DrawString(font, ButtonText, buttonTextPos, Color.White); //button font
+    }
 
 }
-
-
-
 
 public class Salad : Recipe //targets: tomato 4 ,lettuce 3,lemon 2,tuna2
 {

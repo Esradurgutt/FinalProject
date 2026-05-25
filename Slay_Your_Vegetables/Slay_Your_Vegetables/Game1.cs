@@ -13,7 +13,7 @@ namespace Slay_Your_Vegetables
         private GraphicsDeviceManager _graphics;
         public static Microsoft.Xna.Framework.Content.ContentManager ContentManager;
         private SpriteBatch _spriteBatch;
-        private Song _backgroundMusic;//song
+        private Song _backgroundMusic;
         Texture2D kitchenT, recipeT;
         private LevelManage _levelManage;
         private SpawnManage _spawnManage;
@@ -28,8 +28,6 @@ namespace Slay_Your_Vegetables
         private Rectangle playButton, optionsButton, exitButton;
         private int CurrentLevel = 1;
         private SpriteFont font, titleF;
-        private Recipe recipe;
-
 
         public Game1()
         {
@@ -44,12 +42,13 @@ namespace Slay_Your_Vegetables
 
         protected override void Initialize()
         {
+            int btnWidth = 500;
+            int btnHeight = 110;
+            int centerX = (1920 / 2) - (btnWidth / 2);
 
-
-            int centerX = (1920 / 2) - 200;
-            playButton = new Rectangle(centerX, 300, 400, 90);
-            optionsButton = new Rectangle(centerX, 410, 400, 90);
-            exitButton = new Rectangle(centerX, 520, 400, 90);
+            playButton = new Rectangle(centerX, 320, btnWidth, btnHeight);
+            optionsButton = new Rectangle(centerX, 460, btnWidth, btnHeight);
+            exitButton = new Rectangle(centerX, 600, btnWidth, btnHeight);
 
             base.Initialize();
         }
@@ -58,14 +57,13 @@ namespace Slay_Your_Vegetables
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentManager = this.Content;
-            font = Content.Load<SpriteFont>("Fonts/font1");//YENİ EKLENENLER YÜKLENDİ
-            titleF = Content.Load<SpriteFont>("Fonts/titleF");//YENİ EKLENENLER YÜKLENDİ
-            recipeT = Content.Load<Texture2D>("recipeP");//YENİ EKLENENLER YÜKLENDİ
-            kitchenT = Content.Load<Texture2D>("kitchenT");//YENİ EKLENENLER YÜKLENDİ
+            font = Content.Load<SpriteFont>("Fonts/font1");
+            titleF = Content.Load<SpriteFont>("Fonts/titleF");
+            recipeT = Content.Load<Texture2D>("Recipe");
+            kitchenT = Content.Load<Texture2D>("kitchenT");
 
             AssetManager.LoadAllContent(ContentManager, GraphicsDevice);
 
-            // Müzik yükleme ve başlatma
             _backgroundMusic = Content.Load<Song>("Music");
             MediaPlayer.Play(_backgroundMusic);
             MediaPlayer.IsRepeating = true;
@@ -73,7 +71,7 @@ namespace Slay_Your_Vegetables
 
             _uiManager = new UIManager(_spriteBatch, this);
             _spawnManage = new SpawnManage(_levelManage, Enemy.textures);
-            _levelManage = new LevelManage(GraphicsDevice, font, titleF, recipeT);// PARANTEZ DOLDU
+            _levelManage = new LevelManage(GraphicsDevice, font, titleF, recipeT);
             _levelManage.LoadLevel(CurrentLevel);
 
             Texture2D chefTex = null;
@@ -97,7 +95,14 @@ namespace Slay_Your_Vegetables
                     break;
 
                 case LocalGameState.Playing:
-                    UpdateGameplay(gameTime);
+                    if (_levelManage.CurrentLevel != null && _levelManage.CurrentLevel.IsTutorialActive)
+                    {
+                        _levelManage.CurrentLevel.Update(gameTime);
+                    }
+                    else
+                    {
+                        UpdateGameplay(gameTime);
+                    }
                     break;
 
                 case LocalGameState.Options:
@@ -108,20 +113,6 @@ namespace Slay_Your_Vegetables
                     if (InputManager.IsKeyPressed(Keys.R)) RestartLevel();
                     if (InputManager.IsKeyPressed(Keys.Back)) { CurrentLevel = 1; _currentState = LocalGameState.MainMenu; }
                     break;
-            }
-            if (_levelManage.CurrentLevel != null) // SEVİYE AYARI
-            {
-                _levelManage.CurrentLevel.Update(gameTime);
-            }
-
-            if (_levelManage.CurrentLevel != null && _levelManage.CurrentLevel.IsTutorialActive)//TUTORIAL ÇALIŞMASI İÇİN
-            {
-                base.Update(gameTime);
-                return;
-            }
-            if (_spawnManage != null)
-            {
-                _spawnManage.Update(gameTime);
             }
 
             base.Update(gameTime);
@@ -271,16 +262,21 @@ namespace Slay_Your_Vegetables
             GraphicsDevice.Clear(Color.CornflowerBlue);
             Matrix scale = Matrix.CreateScale((float)GraphicsDevice.Viewport.Width / 1920f, (float)GraphicsDevice.Viewport.Height / 1080f, 1.0f);
 
-            _spriteBatch.Begin(transformMatrix: scale);
-            _spriteBatch.Draw(kitchenT, new Rectangle(0, 0, 2448, 2448), Color.White); //MUTFAK TEXTUREI
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, scale);
+            
+            _spriteBatch.Draw(kitchenT, new Rectangle(0, 0, 2448, 2448), Color.White); 
             if (_currentState == LocalGameState.MainMenu) _uiManager.DrawMainMenu(playButton, optionsButton, exitButton);
             else if (_currentState == LocalGameState.GameOver) _uiManager.DrawGameOver();
             else if (_currentState == LocalGameState.Playing)
             {
-                _spriteBatch.Draw(AssetManager.Line1, new Rectangle(500, 120, 1450, 170), Color.Beige); //Renklerini koyulaştır kahverengi fln olsun (çikolatadan açık renk olsun)
-                _spriteBatch.Draw(AssetManager.Line2, new Rectangle(500, 305, 1450, 170), Color.Beige);
-                _spriteBatch.Draw(AssetManager.Line3, new Rectangle(500, 490, 1450, 170), Color.Beige);
-                _spriteBatch.Draw(AssetManager.Line4, new Rectangle(500, 675, 1450, 170), Color.Beige);
+                // SÜTLÜ KAHVE RENGİ TANIMLANDI
+                Color sutluKahve = new Color(200, 160, 120);
+
+                // ÇİZGİLER ARTIK SÜTLÜ KAHVE RENGİNDE ÇİZİLİYOR
+                _spriteBatch.Draw(AssetManager.Line1, new Rectangle(500, 120, 1450, 170), sutluKahve); 
+                _spriteBatch.Draw(AssetManager.Line2, new Rectangle(500, 305, 1450, 170), sutluKahve);
+                _spriteBatch.Draw(AssetManager.Line3, new Rectangle(500, 490, 1450, 170), sutluKahve);
+                _spriteBatch.Draw(AssetManager.Line4, new Rectangle(500, 675, 1450, 170), sutluKahve);
 
                 foreach (var wp in activeWhiskUltimates) wp.Draw(_spriteBatch);
                 _player.Draw(_spriteBatch);
@@ -290,15 +286,13 @@ namespace Slay_Your_Vegetables
                 foreach (var particle in fireParticles) particle.Draw(_spriteBatch, AssetManager.FireTex);
 
                 _uiManager.DrawGameHUD(_player, _levelManage, CurrentLevel);
+
+                if (_levelManage.CurrentLevel != null && _levelManage.CurrentLevel.IsTutorialActive)
+                {
+                    _levelManage.CurrentLevel.Draw(_spriteBatch);
+                }
             }
-            if (_levelManage.CurrentLevel != null)
-            {
-                _levelManage.CurrentLevel.Draw(_spriteBatch);
-            }
-            if (_spawnManage != null && _levelManage.CurrentLevel != null && !_levelManage.CurrentLevel.IsTutorialActive)//BURASI DÜZENLENDİ TUTORIAL İÇİN
-            {
-                _spawnManage.Draw(_spriteBatch);
-            }
+            
             _spriteBatch.End();
             base.Draw(gameTime);
         }

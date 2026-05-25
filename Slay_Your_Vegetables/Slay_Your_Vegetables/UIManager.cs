@@ -17,28 +17,45 @@ namespace Slay_Your_Vegetables
 
         public void DrawMainMenu(Rectangle playBtn, Rectangle optBtn, Rectangle exitBtn)
         {
-            if (AssetManager.GameFont != null)
+            if (AssetManager.TitleFont != null)
             {
                 string title = "SLAY YOUR VEGETABLES";
-                Vector2 size = AssetManager.GameFont.MeasureString(title) * 2f;
-                _sb.DrawString(AssetManager.GameFont, title, new Vector2((1920 / 2) - (size.X / 2), 80), Color.Orange, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+                Vector2 size = AssetManager.TitleFont.MeasureString(title);
+                _sb.DrawString(AssetManager.TitleFont, title, new Vector2((1920 / 2) - (size.X / 2), 80), Color.DarkGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
 
-            DrawButton(playBtn, "PLAY", Color.Green);
-            DrawButton(optBtn, "OPTIONS", Color.Yellow);
-            DrawButton(exitBtn, "EXIT", Color.Red);
+            // Soft (Pastel) Buton Renkleri
+            DrawButton(playBtn, "PLAY", new Color(136, 196, 136));    // Soft Yeşil
+            DrawButton(optBtn, "OPTIONS", new Color(238, 204, 102)); // Soft Sarı
+            DrawButton(exitBtn, "EXIT", new Color(216, 118, 118));   // Soft Kırmızı
         }
 
         public void DrawGameOver()
         {
+            // Ekranı komple DarkRed yapar
             _game.GraphicsDevice.Clear(Color.DarkRed);
-            if (AssetManager.GameFont != null)
+            
+            // Arka planı kırmızı kutu ile kapla
+            _sb.Draw(AssetManager.Pixel, new Rectangle(0, 0, 1920, 1080), Color.DarkRed);
+
+            if (AssetManager.TitleFont != null)
             {
+                // "YOU DIED!" yazısı
                 string text1 = "YOU DIED!";
-                Vector2 size1 = AssetManager.GameFont.MeasureString(text1) * 2f;
-                _sb.DrawString(AssetManager.GameFont, text1, new Vector2(1920 / 2 - size1.X / 2, 300), Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
-                _sb.DrawString(AssetManager.GameFont, "Press 'R' to Try Again", new Vector2(750, 450), Color.Yellow);
-                _sb.DrawString(AssetManager.GameFont, "Press 'Backspace' to Main Menu", new Vector2(650, 500), Color.LightGray);
+                float mainScale = 1f; 
+                Vector2 size1 = AssetManager.TitleFont.MeasureString(text1) * mainScale;
+                _sb.DrawString(AssetManager.TitleFont, text1, new Vector2((1920 / 2) - (size1.X / 2), 250), Color.White, 0f, Vector2.Zero, mainScale, SpriteEffects.None, 0f);
+
+                // Alt Yazılar (Net görünüm için TitleFont kullanıldı)
+                string retryText = "TRY AGAIN (Press 'R')";
+                string menuText = "Press 'Backspace' to Main Menu";
+                float subScale = 0.5f; 
+                
+                Vector2 retrySize = AssetManager.TitleFont.MeasureString(retryText) * subScale;
+                Vector2 menuSize = AssetManager.TitleFont.MeasureString(menuText) * subScale;
+
+                _sb.DrawString(AssetManager.TitleFont, retryText, new Vector2(1920 / 2 - retrySize.X / 2, 450), Color.Yellow, 0f, Vector2.Zero, subScale, SpriteEffects.None, 0f);
+                _sb.DrawString(AssetManager.TitleFont, menuText, new Vector2(1920 / 2 - menuSize.X / 2, 600), Color.LightGray, 0f, Vector2.Zero, subScale, SpriteEffects.None, 0f);
             }
         }
 
@@ -53,16 +70,19 @@ namespace Slay_Your_Vegetables
             
             _sb.Draw(AssetManager.Pixel, rect, renderColor);
             
-            if (AssetManager.GameFont != null)
+            // Buton Yazıları
+            if (AssetManager.TitleFont != null)
             {
-                Vector2 textSize = AssetManager.GameFont.MeasureString(text);
-                _sb.DrawString(AssetManager.GameFont, text, new Vector2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2), Color.Black);
+                float textScale = 0.35f; 
+                Vector2 textSize = AssetManager.TitleFont.MeasureString(text) * textScale;
+                Vector2 textPos = new Vector2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
+                _sb.DrawString(AssetManager.TitleFont, text, textPos, Color.Black, 0f, Vector2.Zero, textScale, SpriteEffects.None, 0f);
             }
         }
 
-        // UNUTTUĞUM OYUN İÇİ ARAYÜZÜ METODU
         public void DrawGameHUD(Player player, LevelManage levelManage, int currentLevelIndex)
         {
+            // Level Bilgisi
             if (AssetManager.GameFont != null)
             {
                 string levelStr = $"LEVEL {currentLevelIndex} : {GetLevelName(currentLevelIndex)}";
@@ -80,6 +100,7 @@ namespace Slay_Your_Vegetables
                 _sb.DrawString(AssetManager.GameFont, levelStr, new Vector2(960 - (strSize.X / 2), boxY + 10), Color.Gold, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
             }
 
+            // Hedefler
             int goalCount = levelManage.CurrentLevel.Goals.Count;
             int dynamicWidth = (goalCount * 180) + 20;
             if (AssetManager.Requirements != null)
@@ -113,6 +134,7 @@ namespace Slay_Your_Vegetables
                 startX += 180;
             }
 
+            // Oyuncu Durumu ve Silah Kontrolü
             if (player != null)
             {
                 int healthWidth = (int)((player.CurrentHP / (float)player.MaxHP) * 150);
@@ -127,6 +149,33 @@ namespace Slay_Your_Vegetables
                 }
 
                 int[] counts = { player.KnifeCount, player.BlowtorchCount, player.WhiskCount };
+                int currentWeaponCount = counts[player.CurrentWeaponIndex];
+
+                // Silah Metinleri
+                if (AssetManager.GameFont != null)
+                {
+                    string keysText = "[Q] Knife  [E] Blowtorch  [R] Whisk";
+                    string selectedWeaponName = player.CurrentWeaponIndex == 0 ? "Knife" : (player.CurrentWeaponIndex == 1 ? "Blowtorch" : "Whisk");
+                    string selectedText = $"Selected: {selectedWeaponName}";
+
+                    _sb.DrawString(AssetManager.GameFont, keysText, new Vector2(50, 850), Color.Black);
+                    _sb.DrawString(AssetManager.GameFont, selectedText, new Vector2(50, 890), Color.Black);
+
+                    // --- ULTIMATE KONTROLÜ ---
+                    if (currentWeaponCount >= 10)
+                    {
+                        // Seçili yazı ne kadar uzunsa, ULTIMATE yazısını o kadar sağa itiyoruz
+                        Vector2 selectedSize = AssetManager.GameFont.MeasureString(selectedText);
+                        Vector2 ultPos = new Vector2(50 + selectedSize.X + 25, 890); // +25 boşluk bırakır
+
+                        // Önce kırmızı gölge (biraz kaydırılmış şekilde)
+                        _sb.DrawString(AssetManager.GameFont, "ULTIMATE READY! PRESS [X]", ultPos + new Vector2(2, 2), Color.Red);
+                        
+                        // Üzerine sarı yazı
+                        _sb.DrawString(AssetManager.GameFont, "ULTIMATE READY! PRESS [X]", ultPos, Color.Yellow);
+                    }
+                }
+
                 Texture2D[] texs = { AssetManager.KnifeTex, AssetManager.TorchTex, AssetManager.WhiskTex };
                 Rectangle[] rects = { new Rectangle(50, 930, 100, 100), new Rectangle(190, 930, 100, 100), new Rectangle(330, 930, 100, 100) };
 
@@ -145,6 +194,7 @@ namespace Slay_Your_Vegetables
                 }
             }
 
+            // Weapon Guide
             int guideX = 1400; int guideY = 850; int guideWidth = 550; int guideHeight = 230; 
             if (AssetManager.WeaponGuide != null && AssetManager.WeaponGuide != AssetManager.Pixel)
                 _sb.Draw(AssetManager.WeaponGuide, new Rectangle(guideX, guideY, guideWidth, guideHeight), Color.White);

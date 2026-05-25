@@ -11,6 +11,7 @@ namespace Slay_Your_Vegetables
         public static Texture2D Line1, Line2, Line3, Line4;
         public static Texture2D KnifeTex, TorchTex, WhiskTex, AxTex, FireTex;
         public static SpriteFont GameFont;
+        public static SpriteFont TitleFont; // BÜYÜK YAZILAR İÇİN YENİ EKLENEN FONT DEĞİŞKENİ
         public static List<Texture2D> GirdapTexs = new List<Texture2D>();
 
         public static Texture2D CreateTexture(GraphicsDevice graphics, int width, int height, Color color)
@@ -42,6 +43,9 @@ namespace Slay_Your_Vegetables
             try { Checkmark = content.Load<Texture2D>("Checkmark"); } catch { Checkmark = null; }
 
             GameFont = content.Load<SpriteFont>("MainMenu");
+            
+            // YENİ FONTUN YÜKLENMESİ (Eğer MGCB'de eklemeyi unutursan oyun çökmesin diye GameFont'u kullanır)
+            try { TitleFont = content.Load<SpriteFont>("TitleFont"); } catch { TitleFont = GameFont; }
 
             for (int i = 1; i <= 5; i++)
             {
