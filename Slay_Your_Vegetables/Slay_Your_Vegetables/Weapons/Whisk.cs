@@ -15,7 +15,7 @@ namespace Slay_Your_Vegetables
         {
             foreach (var enemy in enemies)
             {
-                if (EffectiveFoods.Contains(enemy.Name))
+                if (EffectiveFoods.Contains(enemy.Name))//Is it effective?
                 {
                     enemy.TakeDamage(Damage * 2.5f, Name);
                     enemy.PushBack(2f); 

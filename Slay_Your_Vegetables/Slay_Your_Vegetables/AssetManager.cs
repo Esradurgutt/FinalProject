@@ -11,7 +11,7 @@ namespace Slay_Your_Vegetables
         public static Texture2D Line1, Line2, Line3, Line4;
         public static Texture2D KnifeTex, TorchTex, WhiskTex, AxTex, FireTex;
         public static SpriteFont GameFont;
-        public static SpriteFont TitleFont; // BÜYÜK YAZILAR İÇİN YENİ EKLENEN FONT DEĞİŞKENİ
+        public static SpriteFont TitleFont; 
         public static List<Texture2D> GirdapTexs = new List<Texture2D>();
 
         public static Texture2D CreateTexture(GraphicsDevice graphics, int width, int height, Color color)

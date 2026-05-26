@@ -24,14 +24,14 @@ public abstract class Animation
        return;
        timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
       
-       if (timer>= Frametime) 
+       if (timer>= Frametime) //Has the waiting period expired?
         {
-            timer=0f;
+            timer=0f;//Reset the stopwatch
             CurrentFrame++;
 
             if(CurrentFrame >= Frames.Count) // to reset frames and make the animation again
             {
-                CurrentFrame=0;
+                CurrentFrame=0;//Go back to the beginning
                 loop++;
                 LoopComplete();
             }

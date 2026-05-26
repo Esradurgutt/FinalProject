@@ -55,11 +55,11 @@ namespace Slay_Your_Vegetables
                 else if (enemy.Position.Y < 615) enemyLine = 2;
                 else enemyLine = 3;
 
-                // Girdap merkezli olduğu için mesafeyi (70f) ona göre kontrol ediyoruz
+                // Hit Detection
                 if (enemyLine == Line && Math.Abs(enemy.Position.X - Position.X) < 70f)
                 {
                     enemy.Position = new Vector2(enemy.Position.X + 200f, enemy.Position.Y);//Knock the enemy back
-                    enemy.CurrentHP -= 20f; // Deal low damage.
+                    enemy.CurrentHP -= 30f; // Deal low damage.
                     IsActive = false; 
                     break;
                 }
