@@ -55,7 +55,7 @@ namespace Slay_Your_Vegetables
                 if (loadedTex != null) animationFrames.Add(loadedTex);
             }
         }
-
+        //ULTI BAR
         
         public void AddKnifeAttack() { if (KnifeCount < 10) KnifeCount++; }
         public void ResetKnifeCount() { KnifeCount = 0; }
@@ -104,7 +104,7 @@ namespace Slay_Your_Vegetables
                     frameTimer = 0f;
                 }
             }
-            else
+            else //if the player stops
             {
                 if (CurrentStamina < MaxStamina) CurrentStamina += dt * 12f;
                 currentFrame = 0;

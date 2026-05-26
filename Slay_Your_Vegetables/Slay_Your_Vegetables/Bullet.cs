@@ -17,7 +17,7 @@ namespace Slay_Your_Vegetables
         
         private Weapons weapon;
         public float currentDamage; 
-        private List<Enemy> hitEnemies = new List<Enemy>();
+        private List<Enemy> hitEnemies = new List<Enemy>();//hitEnemies prevents the projectile from dealing damage to an enemy thousands of times per second.
 
         // For a boomerang and spinning effect
 
@@ -68,14 +68,14 @@ namespace Slay_Your_Vegetables
             // COLLISION CHECK
             foreach (var e in enemies)
             {
-                bool sameLine = (e.Line == this.BulletLine) || (Math.Abs(e.Position.Y - this.Position.Y) < 80);
+                bool sameLine = (e.Line == this.BulletLine) || (Math.Abs(e.Position.Y - this.Position.Y) < 80);//Are the bullets and the enemy on the same line?
                 bool isTouching = Math.Abs(e.Position.X - this.Position.X) < 120;
 
                 if (sameLine && !e.IsDead && isTouching)
                 {
-                    if (!hitEnemies.Contains(e))
+                    if (!hitEnemies.Contains(e))//Preventing the same enemy from being struck again.
                     {
-                        // 1. Calculate the damage.
+                        // 1. Calculate the damage and Is this weapon effective against this enemy?
                         float finalDamage = weapon.EffectiveFoods.Contains(e.Name) ? currentDamage : currentDamage * 0.1f;
 
                         // 2. Apply the damage
@@ -108,7 +108,7 @@ namespace Slay_Your_Vegetables
                 if (weapon.Name == "Whisk")
                 {
                     //For the whisk’s boomerang effect
-                    Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);
+                    Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);//The center point of the sprite is calculated.
                     Rectangle destRect = new Rectangle((int)Position.X + Width / 2, (int)Position.Y + Height / 2, Width, Height);
                     
                     sb.Draw(Texture, destRect, null, Color.White, Rotation, origin, SpriteEffects.None, 0f);

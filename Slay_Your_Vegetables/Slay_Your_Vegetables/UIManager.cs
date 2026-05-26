@@ -23,30 +23,24 @@ namespace Slay_Your_Vegetables
                 Vector2 size = AssetManager.TitleFont.MeasureString(title);
                 _sb.DrawString(AssetManager.TitleFont, title, new Vector2((1920 / 2) - (size.X / 2), 80), Color.DarkGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
-
-            // Soft (Pastel) Buton Renkleri
-            DrawButton(playBtn, "PLAY", new Color(136, 196, 136));    // Soft Yeşil
-            DrawButton(optBtn, "OPTIONS", new Color(238, 204, 102)); // Soft Sarı
-            DrawButton(exitBtn, "EXIT", new Color(216, 118, 118));   // Soft Kırmızı
+            //Button colors
+            DrawButton(playBtn, "PLAY", new Color(136, 196, 136));    
+            DrawButton(optBtn, "OPTIONS", new Color(238, 204, 102)); 
+            DrawButton(exitBtn, "EXIT", new Color(216, 118, 118));   
         }
-
+        //background color
         public void DrawGameOver()
         {
-            // Ekranı komple DarkRed yapar
             _game.GraphicsDevice.Clear(Color.DarkRed);
-            
-            // Arka planı kırmızı kutu ile kapla
             _sb.Draw(AssetManager.Pixel, new Rectangle(0, 0, 1920, 1080), Color.DarkRed);
 
             if (AssetManager.TitleFont != null)
             {
-                // "YOU DIED!" yazısı
+                // The text that appears after death
                 string text1 = "YOU DIED!";
                 float mainScale = 1f; 
                 Vector2 size1 = AssetManager.TitleFont.MeasureString(text1) * mainScale;
                 _sb.DrawString(AssetManager.TitleFont, text1, new Vector2((1920 / 2) - (size1.X / 2), 250), Color.White, 0f, Vector2.Zero, mainScale, SpriteEffects.None, 0f);
-
-                // Alt Yazılar (Net görünüm için TitleFont kullanıldı)
                 string retryText = "TRY AGAIN (Press 'R')";
                 string menuText = "Press 'Backspace' to Main Menu";
                 float subScale = 0.5f; 
@@ -66,11 +60,11 @@ namespace Slay_Your_Vegetables
             Point mousePos = InputManager.GetMousePosition(scaleX, scaleY);
 
             bool isHovered = rect.Contains(mousePos);
-            Color renderColor = isHovered ? Color.Lerp(color, Color.White, 0.3f) : color;
+            Color renderColor = isHovered ? Color.Lerp(color, Color.White, 0.3f) : color;//Is the mouse cursor over the button?The color is lighter when the mouse is on it.
             
             _sb.Draw(AssetManager.Pixel, rect, renderColor);
             
-            // Buton Yazıları
+            //Button Texts
             if (AssetManager.TitleFont != null)
             {
                 float textScale = 0.35f; 
@@ -82,7 +76,7 @@ namespace Slay_Your_Vegetables
 
         public void DrawGameHUD(Player player, LevelManage levelManage, int currentLevelIndex)
         {
-            // Level Bilgisi
+            // Level Information
             if (AssetManager.GameFont != null)
             {
                 string levelStr = $"LEVEL {currentLevelIndex} : {GetLevelName(currentLevelIndex)}";
@@ -100,8 +94,8 @@ namespace Slay_Your_Vegetables
                 _sb.DrawString(AssetManager.GameFont, levelStr, new Vector2(960 - (strSize.X / 2), boxY + 10), Color.Gold, 0f, Vector2.Zero, 1.5f, SpriteEffects.None, 0f);
             }
 
-            // Hedefler
-            int goalCount = levelManage.CurrentLevel.Goals.Count;
+            // Goals
+            int goalCount = levelManage.CurrentLevel.Goals.Count;//total number of tasks
             int dynamicWidth = (goalCount * 180) + 20;
             if (AssetManager.Requirements != null)
                 _sb.Draw(AssetManager.Requirements, new Rectangle(500, 925, dynamicWidth, 110), Color.LightGray); 
@@ -110,9 +104,9 @@ namespace Slay_Your_Vegetables
             int startY = 935;
             foreach (var goal in levelManage.CurrentLevel.Goals)
             {
-                int id = goal.Key;
+                int id = goal.Key;//The enemy species ID that needs to be killed.
                 int targetCount = goal.Value;
-                int currentCount = levelManage.CurrentLevel.DefeatedCounters[id];
+                int currentCount = levelManage.CurrentLevel.DefeatedCounters[id];//How many of this enemy has the player killed so far?
 
                 if (Enemy.textures.ContainsKey(id))
                     _sb.Draw(Enemy.textures[id], new Rectangle(startX, startY, 90, 90), Color.White);
@@ -134,7 +128,7 @@ namespace Slay_Your_Vegetables
                 startX += 180;
             }
 
-            // Oyuncu Durumu ve Silah Kontrolü
+            //Player Status 
             if (player != null)
             {
                 int healthWidth = (int)((player.CurrentHP / (float)player.MaxHP) * 150);
@@ -151,7 +145,7 @@ namespace Slay_Your_Vegetables
                 int[] counts = { player.KnifeCount, player.BlowtorchCount, player.WhiskCount };
                 int currentWeaponCount = counts[player.CurrentWeaponIndex];
 
-                // Silah Metinleri
+                // Weapon Control
                 if (AssetManager.GameFont != null)
                 {
                     string keysText = "[Q] Knife  [E] Blowtorch  [R] Whisk";
@@ -161,17 +155,12 @@ namespace Slay_Your_Vegetables
                     _sb.DrawString(AssetManager.GameFont, keysText, new Vector2(50, 850), Color.Black);
                     _sb.DrawString(AssetManager.GameFont, selectedText, new Vector2(50, 890), Color.Black);
 
-                    // --- ULTIMATE KONTROLÜ ---
+                    // ULTIMATE CONTROL
                     if (currentWeaponCount >= 10)
                     {
-                        // Seçili yazı ne kadar uzunsa, ULTIMATE yazısını o kadar sağa itiyoruz
                         Vector2 selectedSize = AssetManager.GameFont.MeasureString(selectedText);
-                        Vector2 ultPos = new Vector2(50 + selectedSize.X + 25, 890); // +25 boşluk bırakır
-
-                        // Önce kırmızı gölge (biraz kaydırılmış şekilde)
+                        Vector2 ultPos = new Vector2(50 + selectedSize.X + 25, 890); 
                         _sb.DrawString(AssetManager.GameFont, "ULTIMATE READY! PRESS [X]", ultPos + new Vector2(2, 2), Color.Red);
-                        
-                        // Üzerine sarı yazı
                         _sb.DrawString(AssetManager.GameFont, "ULTIMATE READY! PRESS [X]", ultPos, Color.Yellow);
                     }
                 }
@@ -181,8 +170,8 @@ namespace Slay_Your_Vegetables
 
                 for (int i = 0; i < 3; i++)
                 {
-                    bool isReady = counts[i] >= 10;
-                    bool isSelected = player.CurrentWeaponIndex == i;
+                    bool isReady = counts[i] >= 10;//ULTIMATE COUNTER
+                    bool isSelected = player.CurrentWeaponIndex == i;//Is the weapon selected?
                     Color borderColor = isReady ? Color.Red : (isSelected ? Color.LimeGreen : Color.Transparent);
 
                     _sb.Draw(AssetManager.Pixel, new Rectangle(rects[i].X - 5, rects[i].Y - 5, 110, 110), borderColor);
@@ -229,7 +218,7 @@ namespace Slay_Your_Vegetables
             }
             if (AssetManager.WhiskTex != null) _sb.Draw(AssetManager.WhiskTex, new Rectangle(whiskWeaponX, whiskRowY, 40, 40), Color.White);
         }
-
+        //Name of the section (which dish is being prepared)
         private string GetLevelName(int levelIndex)
         {
             switch (levelIndex)

@@ -34,10 +34,10 @@ namespace Slay_Your_Vegetables
         public override void Update(GameTime gameTime)
         {
             if (IsDead) return;
-            Position.X -= Speed;
+            Position.X -= Speed;//Enemy moves to the left.
             string folder = (Name == "Ground beef") ? "GBeefWalk" : Name + "Walk";
             string prefix = (Name == "Ground beef") ? "gbeefW_" : Name.ToLower() + "W_";
-            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;
+            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;//In which frame is my animation?
             try { texture = Game1.ContentManager.Load<Texture2D>($"{folder}/{prefix}{frame:D5}"); } catch { }
         }
 

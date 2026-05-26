@@ -44,10 +44,10 @@ namespace Slay_Your_Vegetables
 
             GameFont = content.Load<SpriteFont>("MainMenu");
             
-            // YENİ FONTUN YÜKLENMESİ (Eğer MGCB'de eklemeyi unutursan oyun çökmesin diye GameFont'u kullanır)
+            //  Use GameFont so the game doesn't crash.
             try { TitleFont = content.Load<SpriteFont>("TitleFont"); } catch { TitleFont = GameFont; }
 
-            for (int i = 1; i <= 5; i++)
+            for (int i = 1; i <= 5; i++)//5 Whirlpool images appear in sequence.
             {
                 try { GirdapTexs.Add(content.Load<Texture2D>($"WhiskUltimate/Whirlpool{i}")); } catch { }
             }
