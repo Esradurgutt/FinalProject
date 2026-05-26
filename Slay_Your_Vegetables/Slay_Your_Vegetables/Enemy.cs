@@ -6,24 +6,28 @@ namespace Slay_Your_Vegetables
 {
     public abstract class Enemy : ScaledSprite
     {
+        public WalkAnimation walkAnimation;
+        public Animation animation;
         public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();// texture ile ID leri bağladık
     
         public int ID { get; set; } 
-        
         public string Name { get; set; }
         public float MaxHP { get; set; }
         public float CurrentHP { get; set; }
         public float Speed { get; set; }
         public float AttackPower { get; set; }
         public bool IsDead => CurrentHP <= 0;
-        
         public int Line { get; set; } 
+
+        public Enemy(Texture2D t, Vector2 p) : base(t, p) { }
 
         public Enemy(Texture2D t, Vector2 p, string n, float h, float s) : base(t, p)
         {
             Name = n; MaxHP = h; CurrentHP = h; Speed = s; AttackPower = 10f;
         }
 
+        // Temel metotları 'virtual' yapıyoruz ki alt sınıflar 'override' edebilsin
+        public virtual void DealDamage() { }
         public virtual void TakeDamage(float amount, string weaponName) { CurrentHP -= amount; }
         public virtual void PushBack(float amount) { Position.X += amount * 50f; }
 
@@ -42,13 +46,11 @@ namespace Slay_Your_Vegetables
             if (!IsDead) 
             {
                 sb.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 150, 150), Color.White);
-
                 if (AssetManager.Pixel != null)
                 {
                     float hpPercent = CurrentHP / MaxHP;
                     if (hpPercent < 0) hpPercent = 0;
                     int barY = (int)Position.Y - 15;
-                    
                     sb.Draw(AssetManager.Pixel, new Rectangle((int)Position.X, barY, 150, 10), Color.Black);
                     sb.Draw(AssetManager.Pixel, new Rectangle((int)Position.X, barY, (int)(150 * hpPercent), 10), Color.Red);
                 }
@@ -59,7 +61,6 @@ namespace Slay_Your_Vegetables
         {
             if (textures == null || !textures.ContainsKey(id)) return null;
             Texture2D tex = textures[id];
-            
             Enemy createdEnemy = null;
             
             switch (id)
@@ -80,18 +81,8 @@ namespace Slay_Your_Vegetables
                 case 13: createdEnemy = new Banana(tex, position); break;
                 case 14: createdEnemy = new Biscuit(tex, position); break;
             }
-            
-            if (createdEnemy != null)
-            {
-                createdEnemy.Line = line;
-                createdEnemy.ID = id; 
-            }
-            
+            if (createdEnemy != null) { createdEnemy.Line = line; createdEnemy.ID = id; }
             return createdEnemy;
         }
     }
-    
-    public abstract class SharpResponsiveEnemy : Enemy { public SharpResponsiveEnemy(Texture2D t, Vector2 p, string n, float h, float s) : base(t, p, n, h, s) { } }
-    public abstract class ThermalResponsiveEnemy : Enemy { public ThermalResponsiveEnemy(Texture2D t, Vector2 p, string n, float h, float s) : base(t, p, n, h, s) { } }
-    public abstract class FluidResponsiveEnemy : Enemy { public FluidResponsiveEnemy(Texture2D t, Vector2 p, string n, float h, float s) : base(t, p, n, h, s) { } }
 }

@@ -13,21 +13,25 @@ namespace Slay_Your_Vegetables
         private GraphicsDeviceManager _graphics;
         public static Microsoft.Xna.Framework.Content.ContentManager ContentManager;
         private SpriteBatch _spriteBatch;
+        
+        // Oyun Yönetimi
         private Song _backgroundMusic;
-        Texture2D kitchenT, recipeT;
         private LevelManage _levelManage;
         private SpawnManage _spawnManage;
         private UIManager _uiManager;
         private Player _player;
+        private Texture2D kitchenT, recipeT;
+        private SpriteFont font, titleF;
 
+        // Oyun Listeleri
         public List<Bullet> activeBullets = new List<Bullet>();
         private List<FireParticle> fireParticles = new List<FireParticle>();
         private List<WhiskUltimate> activeWhiskUltimates = new List<WhiskUltimate>();
-        private enum GameState { HowToPlay, Playing }
+        
+        // Oyun Durumu
         private LocalGameState _currentState = LocalGameState.MainMenu;
         private Rectangle playButton, optionsButton, exitButton;
         private int CurrentLevel = 1;
-        private SpriteFont font, titleF;
 
         public Game1()
         {
@@ -57,6 +61,7 @@ namespace Slay_Your_Vegetables
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentManager = this.Content;
+            
             font = Content.Load<SpriteFont>("Fonts/font1");
             titleF = Content.Load<SpriteFont>("Fonts/titleF");
             recipeT = Content.Load<Texture2D>("Recipe");
@@ -70,8 +75,9 @@ namespace Slay_Your_Vegetables
             MediaPlayer.Volume = 0.5f;
 
             _uiManager = new UIManager(_spriteBatch, this);
-            _spawnManage = new SpawnManage(_levelManage, Enemy.textures);
             _levelManage = new LevelManage(GraphicsDevice, font, titleF, recipeT);
+            _spawnManage = new SpawnManage(_levelManage, Enemy.textures);
+            
             _levelManage.LoadLevel(CurrentLevel);
 
             Texture2D chefTex = null;
@@ -85,30 +91,20 @@ namespace Slay_Your_Vegetables
         protected override void Update(GameTime gameTime)
         {
             InputManager.Update();
-
             if (InputManager.IsKeyPressed(Keys.Escape)) Exit();
 
             switch (_currentState)
             {
-                case LocalGameState.MainMenu:
-                    HandleMenuLogic();
-                    break;
-
-                case LocalGameState.Playing:
+                case LocalGameState.MainMenu: HandleMenuLogic(); break;
+                case LocalGameState.Playing: 
                     if (_levelManage.CurrentLevel != null && _levelManage.CurrentLevel.IsTutorialActive)
-                    {
                         _levelManage.CurrentLevel.Update(gameTime);
-                    }
                     else
-                    {
                         UpdateGameplay(gameTime);
-                    }
                     break;
-
                 case LocalGameState.Options:
                     if (InputManager.IsKeyPressed(Keys.Back)) _currentState = LocalGameState.MainMenu;
                     break;
-
                 case LocalGameState.GameOver:
                     if (InputManager.IsKeyPressed(Keys.R)) RestartLevel();
                     if (InputManager.IsKeyPressed(Keys.Back)) { CurrentLevel = 1; _currentState = LocalGameState.MainMenu; }
@@ -148,6 +144,7 @@ namespace Slay_Your_Vegetables
             _spawnManage.Update(gameTime, _player);
             HandleCombatInput();
 
+            // Güncelleme Döngüleri
             for (int i = activeBullets.Count - 1; i >= 0; i--)
             {
                 activeBullets[i].Update(gameTime, _spawnManage.GetActiveEnemies());
@@ -195,6 +192,7 @@ namespace Slay_Your_Vegetables
 
             if (InputManager.IsKeyPressed(Keys.X))
             {
+                System.Random rnd = new System.Random();
                 if (_player.CurrentWeaponIndex == 0 && _player.KnifeCount >= 10)
                 {
                     activeBullets.Add(new Bullet(AssetManager.AxTex, new Vector2(_player.Position.X, _player.Position.Y), new Axe(), currentLine));
@@ -202,7 +200,6 @@ namespace Slay_Your_Vegetables
                 }
                 else if (_player.CurrentWeaponIndex == 1 && _player.BlowtorchCount >= 10)
                 {
-                    System.Random rnd = new System.Random();
                     for (int i = 0; i < 40; i++)
                     {
                         int randomLine = rnd.Next(0, 4);
@@ -213,7 +210,6 @@ namespace Slay_Your_Vegetables
                 }
                 else if (_player.CurrentWeaponIndex == 2 && _player.WhiskCount >= 10)
                 {
-                    System.Random rnd = new System.Random();
                     float pX = _player.Position.X;
                     activeWhiskUltimates.Add(new WhiskUltimate(new Vector2(pX, 160f), 0, AssetManager.GirdapTexs, rnd));
                     activeWhiskUltimates.Add(new WhiskUltimate(new Vector2(pX, 345f), 1, AssetManager.GirdapTexs, rnd));
@@ -265,14 +261,15 @@ namespace Slay_Your_Vegetables
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, scale);
             
             _spriteBatch.Draw(kitchenT, new Rectangle(0, 0, 2448, 2448), Color.White); 
-            if (_currentState == LocalGameState.MainMenu) _uiManager.DrawMainMenu(playButton, optionsButton, exitButton);
-            else if (_currentState == LocalGameState.GameOver) _uiManager.DrawGameOver();
+            
+            if (_currentState == LocalGameState.MainMenu) 
+                _uiManager.DrawMainMenu(playButton, optionsButton, exitButton);
+            else if (_currentState == LocalGameState.GameOver) 
+                _uiManager.DrawGameOver();
             else if (_currentState == LocalGameState.Playing)
             {
-                // SÜTLÜ KAHVE RENGİ TANIMLANDI
                 Color sutluKahve = new Color(200, 160, 120);
 
-                // ÇİZGİLER ARTIK SÜTLÜ KAHVE RENGİNDE ÇİZİLİYOR
                 _spriteBatch.Draw(AssetManager.Line1, new Rectangle(500, 120, 1450, 170), sutluKahve); 
                 _spriteBatch.Draw(AssetManager.Line2, new Rectangle(500, 305, 1450, 170), sutluKahve);
                 _spriteBatch.Draw(AssetManager.Line3, new Rectangle(500, 490, 1450, 170), sutluKahve);
@@ -282,7 +279,6 @@ namespace Slay_Your_Vegetables
                 _player.Draw(_spriteBatch);
                 foreach (var enemy in _spawnManage.GetActiveEnemies()) enemy.Draw(_spriteBatch);
                 foreach (var bullet in activeBullets) bullet.Draw(_spriteBatch);
-
                 foreach (var particle in fireParticles) particle.Draw(_spriteBatch, AssetManager.FireTex);
 
                 _uiManager.DrawGameHUD(_player, _levelManage, CurrentLevel);
