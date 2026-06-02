@@ -22,10 +22,10 @@ namespace Slay_Your_Vegetables
         public void Update(GameTime gameTime, Player player)
         {
             spawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (spawnTimer >= lvl.CurrentLevel.spawnPeriod)//Spawn creates a new enemy when the spawnperiod expires.
+            if (spawnTimer >= lvl.CurrentLevel.spawnPeriod)
             {
                 spawnTimer = 0f;
-                int randomId = lvl.CurrentLevel.SpawnPool[random.Next(lvl.CurrentLevel.SpawnPool.Count)];//It draws a random enemy ID from the SpawnPool.
+                int randomId = lvl.CurrentLevel.SpawnPool[random.Next(lvl.CurrentLevel.SpawnPool.Count)];
                 int chosenLine = random.Next(0, 4);
                 float spawnY = 120 + (chosenLine * 185) + 10;
                 Spawn(randomId, new Vector2(1920, spawnY), chosenLine);

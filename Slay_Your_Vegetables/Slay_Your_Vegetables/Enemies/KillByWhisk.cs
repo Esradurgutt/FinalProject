@@ -25,8 +25,7 @@ namespace Slay_Your_Vegetables
                 frames.Add(Game1.ContentManager.Load<Texture2D>(asset));
             }
 
-            this.walkAnimation = new WalkAnimation(frames, 0.04f);
-            this.animation = walkAnimation;
+            
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -51,8 +50,7 @@ namespace Slay_Your_Vegetables
                 frames.Add(Game1.ContentManager.Load<Texture2D>(asset));
             }
 
-            this.walkAnimation = new WalkAnimation(frames, 0.04f);
-            this.animation = walkAnimation;
+            
         }
 
         public override void DealDamage() { base.DealDamage(); }

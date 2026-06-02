@@ -6,8 +6,7 @@ namespace Slay_Your_Vegetables
 {
     public abstract class Enemy : ScaledSprite
     {
-        public WalkAnimation walkAnimation;
-        public Animation animation;
+        
         public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();// texture ile ID leri bağladık
     
         public int ID { get; set; } 
@@ -26,7 +25,7 @@ namespace Slay_Your_Vegetables
             Name = n; MaxHP = h; CurrentHP = h; Speed = s; AttackPower = 10f;
         }
 
-        // Temel metotları 'virtual' yapıyoruz ki alt sınıflar 'override' edebilsin
+        
         public virtual void DealDamage() { }
         public virtual void TakeDamage(float amount, string weaponName) { CurrentHP -= amount; }
         public virtual void PushBack(float amount) { Position.X += amount * 50f; }
@@ -35,9 +34,9 @@ namespace Slay_Your_Vegetables
         {
             if (IsDead) return;
             Position.X -= Speed;//Enemy moves to the left.
-            string folder = (Name == "Ground beef") ? "GBeefWalk" : Name + "Walk";
-            string prefix = (Name == "Ground beef") ? "gbeefW_" : Name.ToLower() + "W_";
-            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;//In which frame is my animation?
+            string folder = (Name == "Ground Beef") ? "GBeefWalk" : Name + "Walk";
+            string prefix = (Name == "Ground Beef") ? "gbeefW_" : Name.ToLower() + "W_";
+            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;
             try { texture = Game1.ContentManager.Load<Texture2D>($"{folder}/{prefix}{frame:D5}"); } catch { }
         }
 
