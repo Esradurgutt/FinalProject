@@ -14,7 +14,7 @@ namespace Slay_Your_Vegetables
         public static Microsoft.Xna.Framework.Content.ContentManager ContentManager;
         private SpriteBatch _spriteBatch;
         
-        // Oyun Yönetimi
+        // Game Management
         private Song _backgroundMusic;
         private LevelManage _levelManage;
         private SpawnManage _spawnManage;
@@ -23,12 +23,12 @@ namespace Slay_Your_Vegetables
         private Texture2D kitchenT, recipeT;
         private SpriteFont font, titleF;
 
-        // Oyun Listeleri
+        // Game Lists
         public List<Bullet> activeBullets = new List<Bullet>();
         private List<FireParticle> fireParticles = new List<FireParticle>();
         private List<WhiskUltimate> activeWhiskUltimates = new List<WhiskUltimate>();
         
-        // Oyun Durumu
+        // Game Status
         private LocalGameState _currentState = LocalGameState.MainMenu;
         private Rectangle playButton, optionsButton, exitButton;
         private int CurrentLevel = 1;
