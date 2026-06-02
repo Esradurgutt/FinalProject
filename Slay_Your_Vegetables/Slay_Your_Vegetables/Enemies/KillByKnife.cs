@@ -19,7 +19,7 @@ namespace Slay_Your_Vegetables
             List<Texture2D> wFrames = new List<Texture2D>();
             for (int i = 0; i < 24; i++)
             {
-                wFrames.Add(Game1.ContentManager.Load<Texture2D>("TomatoWalk/tomatoW_" + i.ToString("D5")));// d5 =0000
+                wFrames.Add(Game1.ContentManager.Load<Texture2D>("TomatoWalk/tomatoW_" + i.ToString("D5")));// d5 oluşturacağı sayının basamağını belirtiyormuş
             }
             this.walkAnimation = new WalkAnimation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
             this.animation = walkAnimation;
@@ -44,7 +44,7 @@ namespace Slay_Your_Vegetables
             List<Texture2D> wFrames = new List<Texture2D>();
             for (int i = 0; i < 24; i++)
             {
-                wFrames.Add(Game1.ContentManager.Load<Texture2D>("LettuceWalk/lettuceW_" + i.ToString("D5")));// d5=0000
+                wFrames.Add(Game1.ContentManager.Load<Texture2D>("LettuceWalk/lettuceW_" + i.ToString("D5")));// d5 oluşturacağı sayının basamağını belirtiyormuş
             }
             this.walkAnimation = new WalkAnimation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
             this.animation = walkAnimation;
@@ -59,7 +59,7 @@ namespace Slay_Your_Vegetables
             MaxHP = 300;
             CurrentHP = MaxHP;
             AttackPower = 10;
-            Speed = 3.0f; 
+            Speed = 3.0f; // Hız güncellendi
 
             List<Texture2D> wFrames = new List<Texture2D>();
             for (int i = 0; i < 24; i++)

@@ -24,21 +24,21 @@ public abstract class Animation
        return;
        timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
       
-       if (timer>= Frametime) 
+       if (timer>= Frametime) //Has the waiting period expired?
         {
-            timer=0f;//Reset
+            timer=0f;//Reset the stopwatch
             CurrentFrame++;
 
             if(CurrentFrame >= Frames.Count) // to reset frames and make the animation again
             {
                 CurrentFrame=0;//Go back to the beginning
                 loop++;
-                
+                LoopComplete();
             }
             
         }
     } 
-    
+    protected abstract void LoopComplete();
 }
 public class WalkAnimation :Animation
 {
@@ -47,5 +47,26 @@ public class WalkAnimation :Animation
         
     }
 
+    protected override void LoopComplete()
+    {
+        if (loop>= 4) // YOU CAN CHANGE THE WALKING ANIMATION LOOP IN HERE
+        {
+            isfinished = true;
+        }
+    }
 }
 
+
+    
+public class AttackAnimation: Animation
+{
+    public AttackAnimation(List<Texture2D> frames, float frametime) : base(frames,frametime) { }
+
+    protected override void LoopComplete()
+    {
+        if (loop >= 1) // attack anim plays once
+        {
+            isfinished = true;
+        }
+    }
+}
