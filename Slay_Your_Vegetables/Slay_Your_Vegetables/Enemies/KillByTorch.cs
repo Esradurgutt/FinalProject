@@ -23,7 +23,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("TunaWalk/tunaW_" + i.ToString("D5")));
             }
-           
+            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
+            this.animation = walkAnimation;
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -46,7 +47,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("GBeefWalk/gbeefW_" + i.ToString("D5")));
             }
-            
+            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
+            this.animation = walkAnimation;
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -69,7 +71,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("EggplantWalk/eggplantW_" + i.ToString("D5")));
             }
-           
+            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
+            this.animation = walkAnimation;
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -92,7 +95,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("ButterWalk/butterW_" + i.ToString("D5")));
             }
-            
+            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
+            this.animation = walkAnimation;
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -115,7 +119,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("ChickenWalk/chickenW_" + i.ToString("D5")));
             }
-           
+            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
+            this.animation = walkAnimation;
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -138,7 +143,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("ChocolateWalk/chocolateW_" + i.ToString("D5")));
             }
-            
+            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
+            this.animation = walkAnimation;
         }
 
         public override void DealDamage() { base.DealDamage(); }
