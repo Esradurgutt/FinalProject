@@ -35,7 +35,7 @@ public class Recipe  //How to play
         int panelWidth = 700, panelHeight = 900; // recipe panel size
         recipeRec = new Rectangle((screenWidth / 2) - 400, (screenHeight / 2) - 475, panelWidth, panelHeight);
 
-        
+    
         textPos = new Vector2(recipeRec.X + 85, recipeRec.Y + 160);
 
         int buttonWidth = 160, buttonHeight = 50; //start button size 

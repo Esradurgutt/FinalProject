@@ -26,19 +26,19 @@ public abstract class Animation
       
        if (timer>= Frametime) 
         {
-            timer=0f;//Reset
+            timer=0f;//Reset 
             CurrentFrame++;
 
             if(CurrentFrame >= Frames.Count) // to reset frames and make the animation again
             {
                 CurrentFrame=0;//Go back to the beginning
                 loop++;
-                
+                LoopComplete();
             }
             
         }
     } 
-    
+    protected abstract void LoopComplete();
 }
 public class WalkAnimation :Animation
 {
@@ -47,5 +47,14 @@ public class WalkAnimation :Animation
         
     }
 
+    protected override void LoopComplete()
+    {
+        if (loop>= 4) // YOU CAN CHANGE THE WALKING ANIMATION LOOP IN HERE
+        {
+            isfinished = true;
+        }
+    }
 }
 
+
+    

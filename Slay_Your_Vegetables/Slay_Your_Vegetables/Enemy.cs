@@ -8,7 +8,7 @@ namespace Slay_Your_Vegetables
     {
         public WalkAnimation walkAnimation;
         public Animation animation;
-        public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();// texture ile ID leri bağladık
+        public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();
     
         public int ID { get; set; } 
         public string Name { get; set; }
@@ -37,7 +37,7 @@ namespace Slay_Your_Vegetables
             Position.X -= Speed;//Enemy moves to the left.
             string folder = (Name == "Ground Beef") ? "GBeefWalk" : Name + "Walk";
             string prefix = (Name == "Ground Beef") ? "gbeefW_" : Name.ToLower() + "W_";
-            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;//In which frame is my animation?
+            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;
             try { texture = Game1.ContentManager.Load<Texture2D>($"{folder}/{prefix}{frame:D5}"); } catch { }
         }
 
