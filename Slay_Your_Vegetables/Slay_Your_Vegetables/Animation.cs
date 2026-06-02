@@ -24,9 +24,9 @@ public abstract class Animation
        return;
        timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
       
-       if (timer>= Frametime) //Has the waiting period expired?
+       if (timer>= Frametime) 
         {
-            timer=0f;//Reset the stopwatch
+            timer=0f;//Reset 
             CurrentFrame++;
 
             if(CurrentFrame >= Frames.Count) // to reset frames and make the animation again
@@ -58,15 +58,3 @@ public class WalkAnimation :Animation
 
 
     
-public class AttackAnimation: Animation
-{
-    public AttackAnimation(List<Texture2D> frames, float frametime) : base(frames,frametime) { }
-
-    protected override void LoopComplete()
-    {
-        if (loop >= 1) // attack anim plays once
-        {
-            isfinished = true;
-        }
-    }
-}

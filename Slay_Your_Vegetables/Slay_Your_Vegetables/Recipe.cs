@@ -35,8 +35,7 @@ public class Recipe  //How to play
         int panelWidth = 700, panelHeight = 900; // recipe panel size
         recipeRec = new Rectangle((screenWidth / 2) - 400, (screenHeight / 2) - 475, panelWidth, panelHeight);
 
-        // Constructor (Yapıcı metot) içinde textPos'u daha yukarıya (başlığa yakın) çekiyoruz
-        // 230 değerini 160 civarına düşürmek başlığa yaklaştıracaktır.
+    
         textPos = new Vector2(recipeRec.X + 85, recipeRec.Y + 160);
 
         int buttonWidth = 160, buttonHeight = 50; //start button size 
@@ -73,7 +72,7 @@ public class Recipe  //How to play
         Vector2 newTitlepos = new Vector2(panelCenterX, recipeRec.Y + 170f);
         spriteBatch.DrawString(titleF, Title, newTitlepos, Color.DarkSlateGray, 0f, originTitle, 1.0f, SpriteEffects.None, 0f);
         
-        // Başlığın bittiği yerin biraz altına (örneğin 50 piksel altına) metni çizdir
+       
         Vector2 contentPos = new Vector2(recipeRec.X + 85, newTitlepos.Y + 50f);
         spriteBatch.DrawString(font, Content, contentPos, Color.SlateGray);  //for text (how to play)
         
