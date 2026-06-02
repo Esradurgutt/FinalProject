@@ -11,7 +11,7 @@ namespace Slay_Your_Vegetables
             Damage = 50f;
             EffectiveFoods = new List<string> 
             { 
-                "Tuna", "Ground beef", "Eggplant", "Butter", "Chicken", "Chocolate" 
+                "Tuna", "Ground Beef", "Eggplant", "Butter", "Chicken", "Chocolate" 
             };
         }
 
