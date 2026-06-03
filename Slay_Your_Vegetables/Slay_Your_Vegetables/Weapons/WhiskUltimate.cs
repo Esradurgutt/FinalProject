@@ -20,11 +20,8 @@ namespace Slay_Your_Vegetables
             Position = new Vector2(startPos.X, startPos.Y + 55f); 
             Line = line;
             
-            if (texs != null && texs.Count > 0)//Random whirlpools will appear from 5 visuals.
             {
                 texture = texs[rnd.Next(texs.Count)];
-                //We set the pivot point to the exact center so it rotates around itself.
-
                 origin = new Vector2(texture.Width / 2f, texture.Height / 2f); 
             }
         }
@@ -35,11 +32,9 @@ namespace Slay_Your_Vegetables
 
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            rotation += 10f * dt; //For a boomerang effect.
-
+            rotation += 10f * dt; 
             Position.X += Speed * dt;
             
-            //To make it disappear when it exits the right side of the screen.
 
             if (Position.X > 2200) 
             {
@@ -55,11 +50,11 @@ namespace Slay_Your_Vegetables
                 else if (enemy.Position.Y < 615) enemyLine = 2;
                 else enemyLine = 3;
 
-                // Hit Detection
+                
                 if (enemyLine == Line && Math.Abs(enemy.Position.X - Position.X) < 70f)
                 {
-                    enemy.Position = new Vector2(enemy.Position.X + 200f, enemy.Position.Y);//Knock the enemy back
-                    enemy.CurrentHP -= 30f; // Deal low damage.
+                    enemy.Position = new Vector2(enemy.Position.X + 200f, enemy.Position.Y);
+                    enemy.CurrentHP -= 30f; 
                     IsActive = false; 
                     break;
                 }

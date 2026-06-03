@@ -14,7 +14,7 @@ namespace Slay_Your_Vegetables
         public static Microsoft.Xna.Framework.Content.ContentManager ContentManager;
         private SpriteBatch _spriteBatch;
         
-        // Game Management
+        
         private Song _backgroundMusic;
         private LevelManage _levelManage;
         private SpawnManage _spawnManage;
@@ -23,12 +23,12 @@ namespace Slay_Your_Vegetables
         private Texture2D kitchenT, recipeT;
         private SpriteFont font, titleF;
 
-        // Game Lists
+        
         public List<Bullet> activeBullets = new List<Bullet>();
         private List<FireParticle> fireParticles = new List<FireParticle>();
         private List<WhiskUltimate> activeWhiskUltimates = new List<WhiskUltimate>();
         
-        // Game Status
+        
         private LocalGameState _currentState = LocalGameState.MainMenu;
         private Rectangle playButton, optionsButton, exitButton;
         private int CurrentLevel = 1;
@@ -90,7 +90,7 @@ namespace Slay_Your_Vegetables
         protected override void Update(GameTime gameTime)
         {
             InputManager.Update();
-            if (InputManager.IsKeyPressed(Keys.Escape)) Exit();//Pressing ESC will close the game
+            if (InputManager.IsKeyPressed(Keys.Escape)) Exit();
 
             switch (_currentState)
             {
@@ -130,7 +130,7 @@ namespace Slay_Your_Vegetables
         {
             if (_player.CurrentHP <= 0) { _currentState = LocalGameState.GameOver; return; }
 
-            if (CheckLevelComplete())//Have the tasks been completed?
+            if (CheckLevelComplete())
             {
                 CurrentLevel = CurrentLevel > 4 ? 1 : CurrentLevel + 1;
                 LoadNewLevel(CurrentLevel);
@@ -142,7 +142,7 @@ namespace Slay_Your_Vegetables
             _spawnManage.Update(gameTime, _player);
             HandleCombatInput();
 
-            // Update Cycles
+            
             for (int i = activeBullets.Count - 1; i >= 0; i--)
             {
                 activeBullets[i].Update(gameTime, _spawnManage.GetActiveEnemies());
@@ -188,7 +188,7 @@ namespace Slay_Your_Vegetables
                 else _player.AddWhiskAttack();
             }
 
-            if (InputManager.IsKeyPressed(Keys.X))//X → ultimate button
+            if (InputManager.IsKeyPressed(Keys.X))
             {
                 System.Random rnd = new System.Random();
                 if (_player.CurrentWeaponIndex == 0 && _player.KnifeCount >= 10)
@@ -198,7 +198,7 @@ namespace Slay_Your_Vegetables
                 }
                 else if (_player.CurrentWeaponIndex == 1 && _player.BlowtorchCount >= 10)
                 {
-                    for (int i = 0; i < 40; i++)//40 fire particle.
+                    for (int i = 0; i < 40; i++)
                     {
                         int randomLine = rnd.Next(0, 4);
                         fireParticles.Add(new FireParticle(new Vector2(rnd.Next(500, 1900), 0), randomLine));

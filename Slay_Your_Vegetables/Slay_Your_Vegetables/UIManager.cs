@@ -23,12 +23,12 @@ namespace Slay_Your_Vegetables
                 Vector2 size = AssetManager.TitleFont.MeasureString(title);
                 _sb.DrawString(AssetManager.TitleFont, title, new Vector2((1920 / 2) - (size.X / 2), 80), Color.DarkGray, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             }
-            //Button colors
+           
             DrawButton(playBtn, "PLAY", new Color(136, 196, 136));    
             DrawButton(optBtn, "OPTIONS", new Color(238, 204, 102)); 
             DrawButton(exitBtn, "EXIT", new Color(216, 118, 118));   
         }
-        //background color
+        
         public void DrawGameOver()
         {
             _game.GraphicsDevice.Clear(Color.DarkRed);
@@ -36,7 +36,6 @@ namespace Slay_Your_Vegetables
 
             if (AssetManager.TitleFont != null)
             {
-                // The text that appears after death
                 string text1 = "YOU DIED!";
                 float mainScale = 1f; 
                 Vector2 size1 = AssetManager.TitleFont.MeasureString(text1) * mainScale;
@@ -60,8 +59,7 @@ namespace Slay_Your_Vegetables
             Point mousePos = InputManager.GetMousePosition(scaleX, scaleY);
 
             bool isHovered = rect.Contains(mousePos);
-            Color renderColor = isHovered ? Color.Lerp(color, Color.White, 0.3f) : color;//Is the mouse cursor over the button?The color is lighter when the mouse is on it.
-            
+            Color renderColor = isHovered ? Color.Lerp(color, Color.White, 0.3f) : color;
             _sb.Draw(AssetManager.Pixel, rect, renderColor);
             
             //Button Texts
@@ -128,7 +126,7 @@ namespace Slay_Your_Vegetables
                 startX += 180;
             }
 
-            //Player Status 
+            
             if (player != null)
             {
                 int healthWidth = (int)((player.CurrentHP / (float)player.MaxHP) * 150);
@@ -145,7 +143,7 @@ namespace Slay_Your_Vegetables
                 int[] counts = { player.KnifeCount, player.BlowtorchCount, player.WhiskCount };
                 int currentWeaponCount = counts[player.CurrentWeaponIndex];
 
-                // Weapon Control
+                
                 if (AssetManager.GameFont != null)
                 {
                     string keysText = "[Q] Knife  [E] Blowtorch  [R] Whisk";
@@ -155,7 +153,7 @@ namespace Slay_Your_Vegetables
                     _sb.DrawString(AssetManager.GameFont, keysText, new Vector2(50, 850), Color.Black);
                     _sb.DrawString(AssetManager.GameFont, selectedText, new Vector2(50, 890), Color.Black);
 
-                    // ULTIMATE CONTROL
+                    
                     if (currentWeaponCount >= 10)
                     {
                         Vector2 selectedSize = AssetManager.GameFont.MeasureString(selectedText);
@@ -218,7 +216,6 @@ namespace Slay_Your_Vegetables
             }
             if (AssetManager.WhiskTex != null) _sb.Draw(AssetManager.WhiskTex, new Rectangle(whiskWeaponX, whiskRowY, 40, 40), Color.White);
         }
-        //Name of the section (which dish is being prepared)
         private string GetLevelName(int levelIndex)
         {
             switch (levelIndex)

@@ -11,8 +11,6 @@ namespace Slay_Your_Vegetables
         public int TiredSpeed = 3;  
         public int Width = 200; 
         public int Height = 200;
-
-        // Chef's values
         public int MaxHP = 100;
         public int CurrentHP;
         public int MaxMana = 100;
@@ -20,17 +18,15 @@ namespace Slay_Your_Vegetables
         public int MaxStamina = 100;
         public float CurrentStamina;
 
-        // Weapon and Meter Control
         public List<Weapons> WeaponInventory;
         public int CurrentWeaponIndex = 0;
         public Weapons ActiveWeapon => WeaponInventory[CurrentWeaponIndex];
         
-        // Ultimate Counters
         public int KnifeCount = 0;
         public int BlowtorchCount = 0;
         public int WhiskCount = 0;
 
-        // walking animation
+
         private List<Texture2D> animationFrames;
         private int currentFrame = 0;
         private float frameTimer = 0f;
@@ -45,17 +41,15 @@ namespace Slay_Your_Vegetables
             WeaponInventory = new List<Weapons> { new Knife(), new Blowtorch(), new Whisk() };
             animationFrames = new List<Texture2D>();
             
-            // For animation
+           
             for (int i = 0; i < 5; i++)
             {
                 Texture2D loadedTex = null;
                 try { loadedTex = Game1.ContentManager.Load<Texture2D>($"chefWalk_0000{i}"); } catch { }
-                if (loadedTex == null) { try { loadedTex = Game1.ContentManager.Load<Texture2D>($"ChefWalk_0000{i}"); } catch { } }
                 if (loadedTex == null) { try { loadedTex = Game1.ContentManager.Load<Texture2D>($"ChefWalk/chefWalk_0000{i}"); } catch { } }
                 if (loadedTex != null) animationFrames.Add(loadedTex);
             }
         }
-        //ULTI BAR
         
         public void AddKnifeAttack() { if (KnifeCount < 10) KnifeCount++; }
         public void ResetKnifeCount() { KnifeCount = 0; }
@@ -73,7 +67,6 @@ namespace Slay_Your_Vegetables
         {
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            // Mana renewal
             if (CurrentMana < MaxMana) CurrentMana += dt * 20f;
 
             KeyboardState state = Keyboard.GetState();
@@ -84,7 +77,8 @@ namespace Slay_Your_Vegetables
 
             if (animationFrames == null || animationFrames.Count == 0) return;
 
-            // Movement and Stamina
+            
+
             if (movement != Vector2.Zero)
             {
                 if (CurrentStamina > 0) CurrentStamina -= dt * 60f;
@@ -93,7 +87,7 @@ namespace Slay_Your_Vegetables
                 int currentSpeed = (CurrentStamina <= 0) ? TiredSpeed : BaseSpeed;
                 Position += movement * currentSpeed;
 
-                if (Position.Y < 120) Position.Y = 120;
+                if (Position.Y < 120) Position.Y = 120;//collision
                 if (Position.Y > 845 - Height) Position.Y = 845 - Height;
 
                 frameTimer += dt;
@@ -104,7 +98,7 @@ namespace Slay_Your_Vegetables
                     frameTimer = 0f;
                 }
             }
-            else //if the player stops
+            else 
             {
                 if (CurrentStamina < MaxStamina) CurrentStamina += dt * 12f;
                 currentFrame = 0;

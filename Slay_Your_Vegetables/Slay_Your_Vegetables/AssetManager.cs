@@ -43,11 +43,9 @@ namespace Slay_Your_Vegetables
             try { Checkmark = content.Load<Texture2D>("Checkmark"); } catch { Checkmark = null; }
 
             GameFont = content.Load<SpriteFont>("MainMenu");
-            
-            //  Use GameFont so the game doesn't crash.
             try { TitleFont = content.Load<SpriteFont>("TitleFont"); } catch { TitleFont = GameFont; }
 
-            for (int i = 1; i <= 5; i++)//5 Whirlpool images appear in sequence.
+            for (int i = 1; i <= 5; i++)
             {
                 try { GirdapTexs.Add(content.Load<Texture2D>($"WhiskUltimate/Whirlpool{i}")); } catch { }
             }

@@ -8,14 +8,13 @@ namespace Slay_Your_Vegetables
     {
         Dictionary<int, int> Goals { get; }
         Dictionary<int, int> SpawnedCounters { get; }
-        Dictionary<int, int> DefeatedCounters { get; } // It will keep track of the number of those killed
+        Dictionary<int, int> DefeatedCounters { get; }
         List<int> SpawnPool { get; }
         float spawnPeriod { get; }
         bool IsTutorialActive { get; }
         void Update(GameTime gameTime);
         void Draw(SpriteBatch spriteBatch);
     }
-    //for levels
     public class LevelManage
     {
         public ILevel CurrentLevel { get; private set; }

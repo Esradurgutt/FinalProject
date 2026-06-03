@@ -17,10 +17,9 @@ namespace Slay_Your_Vegetables
         
         private Weapons weapon;
         public float currentDamage; 
-        private List<Enemy> hitEnemies = new List<Enemy>();//hitEnemies prevents the projectile from dealing damage to an enemy thousands of times per second.
+        private List<Enemy> hitEnemies = new List<Enemy>();
 
-        // For a boomerang and spinning effect
-
+        
         public float Rotation = 0f;
         public bool IsReturning = false;
 
@@ -34,30 +33,28 @@ namespace Slay_Your_Vegetables
         }
 
         public void Update(GameTime gameTime, List<Enemy> enemies)
-        {
-            //MOVEMENT AND BOOMERANG LOGIC 
+        { 
             if (weapon.Name == "Whisk")
             {
                 Rotation += 0.2f; 
 
                 if (!IsReturning)
                 {
-                    Position.X += Speed; // While moving forward
+                    Position.X += Speed; 
                     if (Position.X > 1900) 
-                        IsReturning = true; //When it reaches the end of the line, start returning
+                        IsReturning = true;
 
                 }
                 else
                 {
-                    Position.X -= Speed; // While returning
+                    Position.X -= Speed; 
                     if (Position.X < 300) 
-                        IsActive = false; //To make it disappear when it reaches the boss
+                        IsActive = false; 
                 }
             }
             else
             {
-                // Knife, Axe, Whisk, Blowtorch move straight normally.
-                Position.X += Speed;
+                Position.X += Speed;// K,A,B
                 if (Position.X > 2000) 
                 { 
                     IsActive = false; 
@@ -65,35 +62,31 @@ namespace Slay_Your_Vegetables
                 }
             }
 
-            // COLLISION CHECK
+            
             foreach (var e in enemies)
             {
-                bool sameLine = (e.Line == this.BulletLine) || (Math.Abs(e.Position.Y - this.Position.Y) < 80);//Are the bullets and the enemy on the same line?
+                bool sameLine = (e.Line == this.BulletLine) || (Math.Abs(e.Position.Y - this.Position.Y) < 80);
                 bool isTouching = Math.Abs(e.Position.X - this.Position.X) < 120;
 
                 if (sameLine && !e.IsDead && isTouching)
                 {
-                    if (!hitEnemies.Contains(e))//Preventing the same enemy from being struck again.
+                    if (!hitEnemies.Contains(e))//ilkkez
                     {
-                        // 1. Calculate the damage and Is this weapon effective against this enemy?
-                        float finalDamage = weapon.EffectiveFoods.Contains(e.Name) ? currentDamage : currentDamage * 0.1f;
-
-                        // 2. Apply the damage
+                        float finalDamage = weapon.EffectiveFoods.Contains(e.Name) ? currentDamage : currentDamage * 0.1f;//tamhasar
                         e.TakeDamage(finalDamage, weapon.Name);
                         hitEnemies.Add(e);
 
-                        // 3.REACTION DEPENDING ON THE WEAPON:
                         if (weapon.Name == "Axe") 
                         {
-                            currentDamage *= 0.5f; // The axe’s damage decreases by a certain percentage and it pierces through.
+                            currentDamage *= 0.5f; 
                         }
                         else if (weapon.Name == "Whisk")
                         {
-                            IsReturning = true; // The whisk starts returning after hitting the first enemy it hits.
+                            IsReturning = true; 
                         }
                         else 
                         { 
-                            IsActive = false; // Knife or Fire: Disappears on impact
+                            IsActive = false; //diğerleriyokolur carptığıgibi
                             break; 
                         }
                     }
@@ -107,8 +100,7 @@ namespace Slay_Your_Vegetables
             {
                 if (weapon.Name == "Whisk")
                 {
-                    //For the whisk’s boomerang effect
-                    Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);//The center point of the sprite is calculated.
+                    Vector2 origin = new Vector2(Texture.Width / 2f, Texture.Height / 2f);
                     Rectangle destRect = new Rectangle((int)Position.X + Width / 2, (int)Position.Y + Height / 2, Width, Height);
                     
                     sb.Draw(Texture, destRect, null, Color.White, Rotation, origin, SpriteEffects.None, 0f);
