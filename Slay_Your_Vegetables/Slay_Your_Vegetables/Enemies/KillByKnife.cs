@@ -21,8 +21,8 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("TomatoWalk/tomatoW_" + i.ToString("D5")));// d5 =00000
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
+            
         }
 
         public override void Update(GameTime gameTime) => base.Update(gameTime);
@@ -46,8 +46,7 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("LettuceWalk/lettuceW_" + i.ToString("D5")));
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
         }
     }
 
@@ -66,8 +65,7 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("LemonWalk/lemonW_" + i.ToString("D5")));
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
         }
     }
 
@@ -86,8 +84,7 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("BreadWalk/breadW_" + i.ToString("D5")));
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
         }
     }
 
@@ -106,8 +103,7 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("MushroomWalk/mushroomW_" + i.ToString("D5")));
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);// YOU CAN CHANGE THE ANIMATION SPEED IN HERE!!!
         }
     }
 
@@ -126,8 +122,7 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("BananaWalk/bananaW_" + i.ToString("D5")));
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);
         }
     }
 
@@ -146,8 +141,7 @@ namespace Slay_Your_Vegetables
             {
                 wFrames.Add(Game1.ContentManager.Load<Texture2D>("BiscuitWalk/biscuitW_" + i.ToString("D5")));
             }
-            this.walkAnimation = new WalkAnimation(wFrames, 0.04f);
-            this.animation = walkAnimation;
+           this.animation  = new Animation(wFrames, 0.04f);
         }
     }
 }
