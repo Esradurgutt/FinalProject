@@ -6,18 +6,17 @@ namespace Slay_Your_Vegetables
 {
     public abstract class Enemy : ScaledSprite
     {
-        public WalkAnimation walkAnimation;
         public Animation animation;
         public static Dictionary<int, Texture2D> textures = new Dictionary<int, Texture2D>();
-    
-        public int ID { get; set; } 
+
+        public int ID { get; set; }
         public string Name { get; set; }
         public float MaxHP { get; set; }
         public float CurrentHP { get; set; }
         public float Speed { get; set; }
         public float AttackPower { get; set; }
         public bool IsDead => CurrentHP <= 0;
-        public int Line { get; set; } 
+        public int Line { get; set; }
 
         public Enemy(Texture2D t, Vector2 p) : base(t, p) { }
 
@@ -26,7 +25,7 @@ namespace Slay_Your_Vegetables
             Name = n; MaxHP = h; CurrentHP = h; Speed = s; AttackPower = 10f;
         }
 
-        
+
         public virtual void DealDamage() { }
         public virtual void TakeDamage(float amount, string weaponName) { CurrentHP -= amount; }
         public virtual void PushBack(float amount) { Position.X += amount * 50f; }
@@ -35,15 +34,16 @@ namespace Slay_Your_Vegetables
         {
             if (IsDead) return;
             Position.X -= Speed;//Enemy moves to the left.
-            string folder = (Name == "Ground Beef") ? "GBeefWalk" : Name + "Walk";
-            string prefix = (Name == "Ground Beef") ? "gbeefW_" : Name.ToLower() + "W_";
-            int frame = (int)(gameTime.TotalGameTime.TotalMilliseconds / 50) % 20;
-            try { texture = Game1.ContentManager.Load<Texture2D>($"{folder}/{prefix}{frame:D5}"); } catch { }
+            if (animation != null)
+            {
+                animation.Update(gameTime);
+                texture = animation.CurrentTexture;
+            }
         }
 
         public override void Draw(SpriteBatch sb)
         {
-            if (!IsDead) 
+            if (!IsDead)
             {
                 sb.Draw(texture, new Rectangle((int)Position.X, (int)Position.Y, 150, 150), Color.White);
                 if (AssetManager.Pixel != null)
@@ -62,7 +62,7 @@ namespace Slay_Your_Vegetables
             if (textures == null || !textures.ContainsKey(id)) return null;
             Texture2D tex = textures[id];
             Enemy createdEnemy = null;
-            
+
             switch (id)
             {
                 case 0: createdEnemy = new Tomato(tex, position); break;

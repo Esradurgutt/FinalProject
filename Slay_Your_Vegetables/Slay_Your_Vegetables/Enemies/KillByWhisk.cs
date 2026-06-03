@@ -18,15 +18,14 @@ namespace Slay_Your_Vegetables
             AttackPower = 10;
             Speed = 2.0f;
 
-            List<Texture2D> frames = new List<Texture2D>();
+            List<Texture2D> wFrames = new List<Texture2D>();
             for (int i = 0; i < 24; i++)
             {
                 string asset = "YogurtWalk/yogurtW_" + i.ToString("D5");
-                frames.Add(Game1.ContentManager.Load<Texture2D>(asset));
+                wFrames.Add(Game1.ContentManager.Load<Texture2D>(asset));
             }
 
-            this.walkAnimation = new WalkAnimation(frames, 0.04f);
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);
         }
 
         public override void DealDamage() { base.DealDamage(); }
@@ -44,15 +43,14 @@ namespace Slay_Your_Vegetables
             AttackPower = 10;
             Speed = 2.0f;
 
-            List<Texture2D> frames = new List<Texture2D>();
+            List<Texture2D> wFrames = new List<Texture2D>();
             for (int i = 0; i < 24; i++)
             {
                 string asset = "CreamWalk/creamW_" + i.ToString("D5");
-                frames.Add(Game1.ContentManager.Load<Texture2D>(asset));
+                wFrames.Add(Game1.ContentManager.Load<Texture2D>(asset));
             }
 
-            this.walkAnimation = new WalkAnimation(frames, 0.04f);
-            this.animation = walkAnimation;
+            this.animation  = new Animation(wFrames, 0.04f);
         }
 
         public override void DealDamage() { base.DealDamage(); }
